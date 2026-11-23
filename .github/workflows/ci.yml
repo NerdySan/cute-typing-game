@@ -1,0 +1,22 @@
+name: CI
+
+# 每次有人開 Pull Request，或推送到 main 以外的分支時，自動檢查程式
+on:
+  pull_request:
+  push:
+    branches-ignore: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: 檢查語法與單字庫
+        run: npm run check
