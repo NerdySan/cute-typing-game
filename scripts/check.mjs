@@ -2,6 +2,7 @@
 // 1. index.html 內嵌的 JavaScript 語法是否正確
 // 2. 每個單字庫裡的單字，是否都有對應的圖示 (EMO) 與中文 (ZH)
 // 3. 同一個單字庫裡有沒有重複的單字
+// 4. 網頁引用的本機圖片是否存在
 import fs from 'node:fs';
 import vm from 'node:vm';
 
@@ -20,6 +21,13 @@ try {
 }
 if (!/<title>[^<]+<\/title>/.test(html)) errors.push('缺少 <title>');
 if (!/<html[^>]*lang=/.test(html)) errors.push('<html> 缺少 lang 屬性');
+
+// --- 本機圖片 -----------------------------------------------------------
+for (const match of html.matchAll(/<img\b[^>]*\bsrc=["']([^"']+)["']/gi)) {
+  const src = match[1];
+  if (/^(?:[a-z][a-z0-9+.-]*:|\/\/|\/|#)/i.test(src)) continue;
+  if (!fs.existsSync(new URL(src, file))) errors.push(`找不到圖片：${src}`);
+}
 
 // --- 2. 單字、圖示、中文對照 ---------------------------------------------
 function readMap(name) {

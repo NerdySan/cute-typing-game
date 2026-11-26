@@ -17,7 +17,7 @@ flowchart LR
     C -- 通過 --> D[合併到 main]
     D --> E{再檢查一次}
     E -- 通過 --> F[自動部署到 GitHub Pages]
-    F --> G[https://帳號.github.io/倉庫/]
+    F --> G[https://nerdysan.github.io/cute-typing-game/]
 ```
 
 ---
@@ -28,7 +28,6 @@ flowchart LR
 |---|---|
 | `.github/workflows/ci.yml` | 在 Pull Request 或非 `main` 分支推送時，執行檢查 |
 | `.github/workflows/deploy.yml` | 推送到 `main` 時，先檢查，通過後部署到 GitHub Pages |
-| `.github/dependabot.yml` | 每月自動檢查 Actions 有沒有新版本，並幫你開 Pull Request |
 | `scripts/check.mjs` | 檢查腳本：JavaScript 語法、單字是否都有圖示與中文、單字有沒有重複 |
 | `package.json` | 定義 `npm run check` 指令（沒有任何相依套件，不需要 `npm install`） |
 
@@ -68,7 +67,7 @@ npm run check
 1. **check 工作**：同上。
 2. **deploy 工作**（`needs: check`，檢查通過才會跑）：
    - `actions/configure-pages`：設定 Pages。
-   - 把 `index.html` 複製到 `_site/` 資料夾。
+   - 把 `index.html` 和 `assets/` 複製到 `_site/` 資料夾。
    - `actions/upload-pages-artifact`：把 `_site/` 打包成部署檔案。
    - `actions/deploy-pages`：把它發布到 GitHub Pages。
 3. `concurrency` 設定確保同時間只有最新一次部署在跑。
@@ -150,7 +149,7 @@ git push origin v1.0.0
    ```js
    import { defineConfig } from '@playwright/test';
    export default defineConfig({
-     webServer: { command: 'python3 -m http.server 8080', port: 8080 },
+     webServer: { command: 'npm start', port: 8080 },
      use: { baseURL: 'http://localhost:8080' },
    });
    ```
@@ -197,6 +196,5 @@ git push origin v1.0.0
 
 ## 小提醒
 
-- workflow 裡的 Actions 版本（`@v4`、`@v5` 等）日後可能有新版，**Dependabot 會自動提醒你升級**。
-  也可以隨時查看各 Action 的官方頁面確認最新版本。
+- workflow 裡的 Actions 版本（`@v4`、`@v5` 等）日後可能有新版，可以隨時查看各 Action 的官方頁面確認最新版本，手動更新版本號即可。
 - 公開倉庫使用 GitHub Actions 是免費的；私人倉庫有每月免費分鐘數的限制。

@@ -1,7 +1,0 @@
-# 每個月自動檢查 GitHub Actions 有沒有新版本，並幫你開 Pull Request
-version: 2
-updates:
-  - package-ecosystem: "github-actions"
-    directory: "/"
-    schedule:
-      interval: "monthly"
