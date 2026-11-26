@@ -25,6 +25,45 @@ button{font:inherit;cursor:pointer;border:0}
 .cloud::before{content:"";position:absolute;left:22px;top:-18px;width:55px;height:55px;background:inherit;border-radius:50%}
 @keyframes drift{from{transform:translateX(-160px)}to{transform:translateX(110vw)}}
 #ground{position:absolute;left:0;right:0;bottom:0;height:64px;background:var(--ground);border-top:6px solid var(--ground2);display:flex;align-items:center;justify-content:space-around;font-size:30px}
+#feedGame{display:none;position:absolute;inset:0;z-index:2;overflow-y:auto;padding:16px;background:linear-gradient(#d5f3ff 0%,#fff2dc 68%,#b4e5a1 68%);color:#4a3b6b;text-align:center}
+.feeding #feedGame{display:flex;flex-direction:column;align-items:center;justify-content:safe center;gap:8px}
+.feeding .cloud,.feeding #ground,.feeding #hint,.feeding #msg{display:none}
+body.feeding #levelStat,body.feeding #hearts,body.feeding #spd{display:none}
+#feedGame h2{margin:0;font-size:clamp(20px,4vh,30px)}
+#feedGame p{margin:0;font-size:15px}
+#feedGame #feedLevel{font-size:clamp(16px,2.8vh,22px);font-weight:700;color:#9c4a60}
+#feedQuestion{width:min(100%,440px);padding:10px 16px 14px;border:4px solid #ffc95c;border-radius:28px;background:#fffdf6;box-shadow:0 6px 0 #e7b980}
+#feedIcon{font-size:clamp(42px,10vh,76px);line-height:1.2}
+#feedQuestion .word{max-width:100%;font-size:clamp(18px,calc(26px*var(--s)),38px);white-space:normal;overflow-wrap:anywhere;border-color:#ffc95c;background:#fff8e6;color:#4a3b6b}
+#feedAnimals{display:flex;align-items:end;justify-content:center;gap:clamp(4px,4vw,25px);width:100%}
+#feedDog{position:relative;width:clamp(100px,25vh,220px);max-width:48%;aspect-ratio:550/670;transform-origin:50% 90%;animation:dogBreathe 3s ease-in-out infinite}
+#feedDog img,#dogSad{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+#feedDog::after{content:"✨";position:absolute;top:8%;right:-2%;font-size:clamp(18px,4vh,30px);opacity:0;pointer-events:none}
+#feedDog.happy{animation:dogHappy .6s ease-in-out,dogBreathe 3s ease-in-out .6s infinite}
+#feedDog.sad{animation:dogSad 1.8s ease-in-out infinite}
+#feedTail{transform-origin:75% 86%;animation:tailIdle 2.4s ease-in-out infinite}
+#feedDog.happy #feedTail{animation:tailWag .16s ease-in-out 6 alternate}
+#feedDog.celebrate #feedTail{animation:tailWag .16s ease-in-out infinite alternate}
+#dogSad{opacity:0;transition:opacity .2s}
+#feedDog.sad #dogSad{opacity:1}
+#feedDog.happy::after{animation:dogSparkle .8s ease-out}
+#feedDog.celebrate::after{animation:dogSparkle 1s ease-in-out infinite}
+#feedDog.celebrate{animation:dogDance .7s ease-in-out infinite alternate}
+@keyframes dogBreathe{50%{transform:translateY(-3px) scale(1.015,.985)}}
+@keyframes dogSad{50%{transform:translateY(3px) rotate(-4deg)}}
+@keyframes tailIdle{50%{transform:rotate(10deg)}}
+@keyframes dogHappy{25%{transform:rotate(-8deg) translateY(-8px)}75%{transform:rotate(8deg) translateY(-8px)}}
+@keyframes dogSparkle{30%,70%{opacity:1;transform:translateY(-8px) scale(1.2)}100%{opacity:0;transform:translateY(-18px) scale(.8)}}
+@keyframes tailWag{from{transform:rotate(-22deg)}to{transform:rotate(22deg)}}
+@keyframes dogDance{from{transform:translateY(0) rotate(-8deg)}to{transform:translateY(-28px) rotate(8deg)}}
+#feedBowl{width:clamp(100px,22vh,190px);max-width:43%}
+#feedBowl .portion[hidden]{display:none}
+#bowlFacet[hidden]{display:none}
+#feedGame #feedStatus{min-height:1.5em;font-size:clamp(20px,calc(22px*var(--s)),30px);line-height:1.35;font-weight:700}
+#feedActions{display:flex;gap:12px}
+#feedActions[hidden]{display:none}
+#feedActions .btn{width:auto;margin:0;padding:10px 18px;font-size:18px}
+@media (prefers-reduced-motion:reduce){#feedDog,#feedDog.happy,#feedDog.sad,#feedDog.celebrate,#feedTail,#feedDog.happy #feedTail,#feedDog.celebrate #feedTail,#feedDog.happy::after,#feedDog.celebrate::after{animation:none}#dogSad{transition:none}}
 .mon{position:absolute;left:0;top:0;width:calc(100px*var(--s));display:flex;flex-direction:column;align-items:center;text-align:center;will-change:transform}
 .mon svg{width:calc(84px*var(--s));height:calc(84px*var(--s));display:block;margin:0 auto;animation:bob .9s ease-in-out infinite}
 .mon.locked svg{filter:drop-shadow(0 0 8px var(--accent2))}
@@ -75,6 +114,7 @@ button{font:inherit;cursor:pointer;border:0}
 .type b{display:block}
 .type small{display:block;font-size:13px;font-weight:500;opacity:.8}
 .type[data-type=game]{background:#ff9fc4}
+.type[data-type=picture]{background:#ffca91}
 .type[data-type=free]{background:#7fe0b5}
 .type[data-type=abc]{background:#c6b3ff}
 .type[data-type=lib]{background:#ffd24d}
@@ -118,7 +158,7 @@ button{font:inherit;cursor:pointer;border:0}
 <body>
 <header>
   <span>⭐ <span id="score">0</span></span>
-  <span>Lv <span id="lv">1</span></span>
+  <span id="levelStat">Lv <span id="lv">1</span></span>
   <span class="hearts" id="hearts"></span>
   <button class="icon" id="homeBtn" aria-label="回到首頁">🏠</button>
   <button class="spd" id="sizeBtn" aria-label="字型大小">Aa 中</button>
@@ -129,6 +169,55 @@ button{font:inherit;cursor:pointer;border:0}
   <div class="cloud" style="top:12%;animation-delay:-10s"></div>
   <div class="cloud" style="top:38%;animation-delay:-38s;transform:scale(.7)"></div>
   <canvas id="gl"></canvas>
+  <div id="feedGame">
+    <h2 id="feedHeading">🐾 陪狗狗吃飯吧！</h2>
+    <p id="feedLevel"></p>
+    <p id="feedIntro">打出圖像下方的單字，讓狗狗吃一口～</p>
+    <div id="feedQuestion">
+      <div id="feedIcon" aria-hidden="true"></div>
+      <div class="word"></div>
+    </div>
+    <div id="feedAnimals">
+      <div id="feedDog" role="img" aria-label="可愛的柯基狗狗">
+        <img id="feedTail" src="assets/corgi-tail.png" alt="">
+        <img id="dogBody" src="assets/corgi-body.png" alt="">
+        <svg id="dogSad" viewBox="0 0 550 670" aria-hidden="true">
+          <defs><radialGradient id="sadMuzzle"><stop offset="55%" stop-color="#fff0de"/><stop offset="100%" stop-color="#fff0de" stop-opacity="0"/></radialGradient></defs>
+          <ellipse cx="256" cy="365" rx="102" ry="54" fill="url(#sadMuzzle)"/>
+          <path d="M230 377 Q256 350 282 377" fill="none" stroke="#755047" stroke-width="6" stroke-linecap="round"/>
+          <path d="M143 296 Q130 316 144 325 Q158 316 143 296Z" fill="#90dbf2" stroke="#fff" stroke-width="3"/>
+        </svg>
+      </div>
+      <svg id="feedBowl" viewBox="0 0 180 125" role="img" aria-label="食物盆">
+        <ellipse cx="90" cy="109" rx="75" ry="10" fill="#79534b" opacity=".15"/>
+        <defs>
+          <clipPath id="foodClip"><ellipse cx="90" cy="53" rx="73" ry="25"/></clipPath>
+          <linearGradient id="bowlBronze" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f3bf8a"/><stop offset=".45" stop-color="#c57840"/><stop offset="1" stop-color="#8f4a2d"/></linearGradient>
+          <linearGradient id="bowlSilver" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f9fafb"/><stop offset=".45" stop-color="#c1c8d0"/><stop offset="1" stop-color="#7e8d9d"/></linearGradient>
+          <linearGradient id="bowlGold" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff5a0"/><stop offset=".45" stop-color="#ffcb36"/><stop offset="1" stop-color="#c68b0c"/></linearGradient>
+          <linearGradient id="bowlPlatinum" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f2faff"/><stop offset=".45" stop-color="#a8c8d8"/><stop offset="1" stop-color="#64849f"/></linearGradient>
+          <linearGradient id="bowlDiamond" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#e7ffff"/><stop offset=".45" stop-color="#70e6f4"/><stop offset="1" stop-color="#1b9ed0"/></linearGradient>
+          <linearGradient id="bowlRainbow" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ff829e"/><stop offset=".22" stop-color="#ffca65"/><stop offset=".43" stop-color="#f5ec74"/><stop offset=".63" stop-color="#83dfa8"/><stop offset=".82" stop-color="#79baf5"/><stop offset="1" stop-color="#c397ec"/></linearGradient>
+        </defs>
+        <ellipse cx="90" cy="53" rx="75" ry="27" fill="#fff0d3" stroke="#755047" stroke-width="4"/>
+        <g clip-path="url(#foodClip)">
+          <g class="portion"><rect x="17" y="27" width="29" height="52" fill="#c7854b"/><ellipse cx="34" cy="48" rx="9" ry="6" fill="#88502f"/></g>
+          <g class="portion"><rect x="47" y="27" width="29" height="52" fill="#c7854b"/><ellipse cx="62" cy="41" rx="9" ry="6" fill="#88502f"/></g>
+          <g class="portion"><rect x="77" y="27" width="29" height="52" fill="#c7854b"/><ellipse cx="91" cy="49" rx="9" ry="6" fill="#88502f"/></g>
+          <g class="portion"><rect x="107" y="27" width="29" height="52" fill="#c7854b"/><ellipse cx="121" cy="41" rx="9" ry="6" fill="#88502f"/></g>
+          <g class="portion"><rect x="137" y="27" width="27" height="52" fill="#c7854b"/><ellipse cx="148" cy="48" rx="9" ry="6" fill="#88502f"/></g>
+        </g>
+        <path id="bowlFinish" d="M16 53 Q21 104 44 108 H136 Q159 104 164 53 Q90 78 16 53Z" fill="url(#bowlBronze)" stroke="#755047" stroke-width="4"/>
+        <path id="bowlFacet" d="M31 64 L68 73 L45 101 M68 73 L90 106 L112 73 M112 73 L149 64 L135 101" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="2" hidden/>
+        <path d="M78 86 Q90 70 102 86 Q90 100 78 86Z" fill="#fff5df"/>
+      </svg>
+    </div>
+    <p id="feedStatus" aria-live="polite"></p>
+    <div id="feedActions" hidden>
+      <button class="btn p" id="feedRestart">再玩一次</button>
+      <button class="btn" id="feedHome">回到首頁</button>
+    </div>
+  </div>
   <div class="msg" id="msg"></div>
   <div class="hint" id="hint"></div>
   <div id="ground"><span>🌷</span><span>🏡</span><span>🐰</span><span>🌼</span><span>🍄</span></div>
@@ -140,6 +229,7 @@ button{font:inherit;cursor:pointer;border:0}
       <h1>萌萌打字大冒險</h1>
       <p>選一個想玩的遊戲吧！</p>
       <button class="type" data-type="game"><span>🐙</span><div><b>單字打怪物</b><small>短單字、長單字，可選難度和主題</small></div></button>
+      <button class="type" data-type="picture"><span>🐶</span><div><b>單字圖像大冒險</b><small>打單字，陪狗狗開心吃飯</small></div></button>
       <button class="type" data-type="abc"><span>🔤</span><div><b>ABC 字母打怪物</b><small>一次打一個字母，最適合剛開始學</small></div></button>
       <button class="type" data-type="free"><span>⌨️</span><div><b>自由敲敲樂</b><small>隨便敲鍵盤，看字母跳出來</small></div></button>
       <button class="type" data-type="lib" id="libBtn"><span>📖</span><div><b>單字字庫</b><small>中英文對照，可依分類查詢</small></div></button>
@@ -156,8 +246,8 @@ button{font:inherit;cursor:pointer;border:0}
   <div class="overlay" id="menu" hidden>
     <div class="panel">
       <div class="buddies">👾🐙👻</div>
-      <h1>單字打怪物</h1>
-      <p>小怪獸要來玩囉！打出牠們頭上的字，把牠們變成星星～</p>
+      <h1 id="menuTitle">單字打怪物</h1>
+      <p id="menuDescription">小怪獸要來玩囉！打出牠們頭上的字，把牠們變成星星～</p>
       <button class="btn o" id="menuBack" style="margin:0 0 10px;padding:8px">← 回選單</button>
       <div class="diff" role="group" aria-label="難度">
         <button data-diff="0">🌱 簡單</button>
@@ -222,7 +312,7 @@ const EMO={};
 'dot⚫ blue🔵 pink🩷 gold🟡 cube🧊 black⚫ white⚪ brown🟤 green🟢 round🔴 purple🟣 circle⭕ square🟦 diamond🔷 triangle🔺 crescent🌙 violet🟣 octagon🛑 blueberry🫐 feather🪶 ladder🪜 mirror🪞 otter🦦 pineapple🍍 seal🦭 stone🪨 arm💪 bow🎀 bug🐛 dad👨 mom👩 gem💎 pan🍳 pup🐶 sad😢 tub🛁 wet💧 yam🍠 cry😭 run🏃 eat🍽️ toe🦶 gym🏋️ ham🍖 oat🌾 tie👔 bone🦴 bowl🥣 chef👨‍🍳 coat🧥 dish🍽️ door🚪 drum🥁 face😊 feet🦶 flag🏳️ foot🦶 hero🦸 hike🥾 hole🕳️ jazz🎷 king🤴 lava🌋 lock🔒 love💕 luck🍀 mask😷 meat🍖 nose👃 palm🌴 pine🌲 road🛣️ salt🧂 sofa🛋️ swan🦢 taco🌮 town🏘️ wand🪄 wish🌠 yoga🧘 angel👼 bacon🥓 berry🍓 bunny🐰 chair🪑 chick🐥 clown🤡 crown👑 daisy🌼 dance💃 dream💭 dress👗 drink🥤 fairy🧚 fruit🍎 ghost👻 glove🧤 house🏠 laugh😂 money💰 mouth👄 movie🎬 nurse👩‍⚕️ olive🫒 party🥳 phone📱 piano🎹 pilot👨‍✈️ queen👸 radio📻 shirt👕 skate⛸️ sleep😴 spoon🥄 sweet🍬 teeth🦷 torch🔦 tower🗼 watch⌚ water💧 wheat🌾 witch🧙‍♀️ woman👩 clean🧼 magic🪄 night🌃 rhino🦏 scarf🧣 sloth🦥 tulip🌷 donut🍩 squid🦑 angry😠 silly🤪 funny🤣 tooth🦷 body🧍 alphabet🔤 anchor⚓ animal🐾 bakery🥐 basket🧺 birthday🎂 bucket🪣 cactus🌵 camera📷 carrot🥕 cereal🥣 circus🎪 clover🍀 cowboy🤠 dentist🦷 dessert🍨 dinner🍽️ farmer🧑‍🌾 giggle😆 goldfish🐠 helmet⛑️ hotdog🌭 jigsaw🧩 lizard🦎 lobster🦞 mailbox📬 museum🏛️ pepper🌶️ picnic🧺 puzzle🧩 ribbon🎀 rooster🐓 sailor⚓ salmon🐟 slipper🩴 soccer⚽ sparrow🐦 sponge🧽 sprout🌱 stadium🏟️ sweater🧥 ticket🎫 toilet🚽 trophy🏆 trumpet🎺 turkey🦃 unicorn🦄 village🏘️ weather🌤️ wedding💒 yogurt🥛 sleepy😴 excited🤩 teapot🫖 cinema🎬 pony🐴 bull🐂 hawk🦅 hippo🦛 bison🦬 caterpillar🐛 peacock🦚 reindeer🦌 bumblebee🐝 gorilla🦍 leopard🐆 raccoon🦝 duckling🐥 kiwi🥝 dumpling🥟 muffin🧁 burrito🌯 waffle🧇 pudding🍮 lollipop🍭 sausage🌭 omelet🍳 lettuce🥬 avocado🥑 coconut🥥 garlic🧄 mushroom🍄 eggplant🍆 bagel🥯 croissant🥐 maple🍁 sunflower🌻 seashell🐚 tornado🌪️ bamboo🎍 autumn🍂 spring🌸 kayak🛶 canoe🛶 metro🚇 crane🏗️ trolley🚎 monorail🚝 rickshaw🛺 rowboat🚣 speedboat🚤 minibus🚐 nebula🌌 cosmos🌌 shuttle🚀 midnight🌃 exam📝 page📄 color🎨 learn🎓 smart🧠 brain🧠 think💭 medal🏅 globe🌍 clip📎 pin📌 science🔬 reading📖 painting🖼️ microscope🔬 computer💻 keyboard⌨️ paintbrush🖌️ concert🎶 singer🎤 dancer💃 painter🎨 compass🧭 abacus🧮 graduate🎓 plus➕ arrow➡️ sparkle✨ ring💍')
 .split(' ').forEach(t=>{const m=t.match(/^([a-z]+)(.+)$/);if(m)EMO[m[1]]=m[2]});
 const COLORS=['#ff8fb1','#6fd8b4','#ffd24d','#b79bff','#ffa45c','#6fc3ff'];
-let mode,mons,score,lives,level,kills,target,last,spawn,running=false,muted=false,best=0;
+let mode,mons,score,lives,level,kills,target,last,spawn,running=false,muted=false,best=0,pictureMode=false;
 try{best=+localStorage.getItem('typing-best')||0}catch(e){}
 
 /* ---------- sound ---------- */
@@ -281,7 +371,7 @@ function pickWord(){
 function renderWord(m){
   const w=m.el.querySelector('.word');
   w.innerHTML=m.word.split('').map((ch,i)=>
-    '<i class="'+(i<m.i?'d':i===m.i&&m===target?'n':'')+'">'+(mode==='letters'?ch.toUpperCase():ch)+'</i>').join('');
+    '<i class="'+(i<m.i?'d':i===m.i&&(m===target||pictureMode)?'n':'')+'">'+(mode==='letters'?ch.toUpperCase():ch)+'</i>').join('');
 }
 function addMonster(){
   const W=stage.clientWidth,word=pickWord();
@@ -309,7 +399,7 @@ function start(md){
   hud();inp.focus();requestAnimationFrame(loop);
 }
 function loop(t){
-  if(!running)return;
+  if(!running||pictureMode)return;
   const dt=Math.min(.1,(t-last)/1000);last=t;
   const floor=stage.clientHeight-64-Math.round(110*SIZES[sizeIdx].m);
   const speed=(26+level*4)*SPD[spdIdx].k;
@@ -393,6 +483,7 @@ function wrong(m){
   el.classList.remove('shake');void el.offsetWidth;el.classList.add('shake');
 }
 function press(c){
+  if(pictureMode){feedPress(c);return}
   if(!target){
     const c0=mons.filter(m=>m.word[0]===c).sort((a,b)=>b.y-a.y)[0];
     if(!c0){wrong(mons.sort((a,b)=>b.y-a.y)[0]);return}
@@ -445,10 +536,10 @@ const THEMES=[
 {w:{short:['red','dot','sky','gem','bow','blue','pink','gold','star','cube','plus','ring','flag','heart','black','white','brown','green','cream','round','arrow','crown','candy'],long:['yellow','orange','purple','circle','square','violet','ribbon','diamond','rainbow','octagon','sparkle','balloon','triangle','crescent']}}
 ];
 let theme=0;
-function getBank(m){
-  const all=THEMES[theme].w[m];
-  if(theme===0)return all.slice(0,DIFF[diff].n[m]);
-  return all.slice(0,Math.max(8,Math.ceil(all.length*[.4,.7,1][diff])));
+function getBank(m,bankTheme=theme,bankDiff=diff){
+  const all=THEMES[bankTheme].w[m];
+  if(bankTheme===0)return all.slice(0,DIFF[bankDiff].n[m]);
+  return all.slice(0,Math.max(8,Math.ceil(all.length*[.4,.7,1][bankDiff])));
 }
 function cnt(){
   $('#cnt').textContent='單字庫：短單字 '+getBank('short').length+' 個、長單字 '+getBank('long').length+' 個';
@@ -535,10 +626,99 @@ function keyChar(e){
 }
 function freeClear(){$('#freeText').innerHTML='';$('#bigKey').innerHTML='';$('#freeHint').style.visibility='visible';inp.focus()}
 let freeOn=false,lastSay=0;
+const FEED_BOWLS=[
+  {name:'青銅',gradient:'bowlBronze'},{name:'白銀',gradient:'bowlSilver'},
+  {name:'黃金',gradient:'bowlGold'},{name:'白金',gradient:'bowlPlatinum'},
+  {name:'鑽石',gradient:'bowlDiamond'},{name:'彩虹',gradient:'bowlRainbow'}
+];
+const FOOD_TOTAL=5,FEED_LEVELS=FEED_BOWLS.length,FEED_DIFFICULTIES=['簡單','普通','困難'];
+let feedCurrent,feedFood=FOOD_TOTAL,feedRecent=[],feedRefillTimer=null,feedStage=0;
+function renderFood(){
+  document.querySelectorAll('#feedBowl .portion').forEach((piece,i)=>piece.toggleAttribute('hidden',i>=feedFood));
+  $('#feedBowl').setAttribute('aria-label',FEED_BOWLS[feedStage].name+'食物盆，剩下 '+feedFood+' 份食物');
+}
+function renderFeedLevel(){
+  const bowl=FEED_BOWLS[feedStage];
+  $('#feedLevel').textContent='第 '+(feedStage+1)+' / '+FEED_LEVELS+' 關 · '+FEED_DIFFICULTIES[Math.floor(feedStage/2)]+' · '+bowl.name+'食物盆';
+  $('#bowlFinish').setAttribute('fill','url(#'+bowl.gradient+')');
+  $('#bowlFacet').toggleAttribute('hidden',bowl.gradient!=='bowlDiamond');
+  renderFood();
+}
+function refillFood(){
+  clearTimeout(feedRefillTimer);feedRefillTimer=null;
+  feedFood=FOOD_TOTAL;renderFood();
+  $('#feedStatus').textContent='食物補滿囉！還有 '+feedFood+' 份 🐾';
+}
+function nextFeedWord(){
+  const difficulty=Math.floor(feedStage/2);
+  const bank=[...new Set([...getBank('short',0,difficulty),...getBank('long',0,difficulty)])];
+  const pool=bank.filter(w=>!feedRecent.includes(w));
+  const word=pool[Math.floor(Math.random()*pool.length)];
+  feedRecent.push(word);if(feedRecent.length>12)feedRecent.shift();
+  feedCurrent={word,i:0,el:$('#feedQuestion')};
+  $('#feedIcon').textContent=EMO[word];
+  $('#feedQuestion').setAttribute('aria-label','題目：'+ZH[word]+'，'+word);
+  renderWord(feedCurrent);
+}
+function startFeeding(){
+  pictureMode=true;updateFX();mode='feed';running=true;freeOn=false;
+  mons=[];target=null;score=0;feedRecent=[];
+  clearTimeout(feedRefillTimer);feedRefillTimer=null;feedFood=FOOD_TOTAL;feedStage=0;
+  document.body.classList.add('feeding');
+  $('#feedDog').classList.remove('happy','sad','celebrate');
+  $('#feedDog').setAttribute('aria-label','可愛的柯基狗狗');
+  $('#feedHeading').textContent='🐾 陪狗狗吃飯吧！';
+  renderFeedLevel();
+  $('#feedIntro').hidden=false;$('#feedQuestion').hidden=false;$('#feedActions').hidden=true;
+  hideAll();$('#score').textContent=score;
+  $('#feedStatus').textContent='食物盆有 '+feedFood+' 份食物 🐾';
+  nextFeedWord();tone(520,.08);inp.focus();
+}
+function feedPress(c){
+  if(feedFood===0)refillFood();
+  if(feedCurrent.word[feedCurrent.i]!==c){
+    feedCurrent.i=0;renderWord(feedCurrent);
+    $('#feedDog').classList.remove('happy');$('#feedDog').classList.add('sad');
+    $('#feedDog').setAttribute('aria-label','沮喪的柯基狗狗');
+    tone(260,.08,'triangle',.05);$('#feedStatus').textContent='沒關係，從頭再試一次！';
+    return;
+  }
+  $('#feedDog').classList.remove('sad');
+  $('#feedDog').setAttribute('aria-label','可愛的柯基狗狗');
+  feedCurrent.i++;tone(500+feedCurrent.i*60,.07);
+  if(feedCurrent.i<feedCurrent.word.length){renderWord(feedCurrent);return}
+  const word=feedCurrent.word;
+  score+=10*word.length;$('#score').textContent=score;
+  feedFood--;renderFood();
+  $('#feedStatus').textContent=feedFood?'好棒！狗狗吃了一口，還有 '+feedFood+' 份 🐾':'第 '+(feedStage+1)+' 關完成！準備下一關 🐾';
+  const dog=$('#feedDog');dog.classList.remove('happy');void dog.offsetWidth;dog.classList.add('happy');
+  dog.setAttribute('aria-label','開心的柯基狗狗');
+  speak(word);
+  if(feedFood>0){nextFeedWord();return}
+  renderWord(feedCurrent);
+  if(feedStage<FEED_LEVELS-1){
+    feedStage++;
+    renderFeedLevel();
+    nextFeedWord();feedRefillTimer=setTimeout(refillFood,900);return;
+  }
+  running=false;
+  dog.classList.remove('happy');dog.classList.add('celebrate');
+  dog.setAttribute('aria-label','開心慶祝的柯基狗狗');
+  $('#feedHeading').textContent='🎉 六關全部通過！';
+  $('#feedLevel').textContent='狗狗好開心！';
+  $('#feedIntro').hidden=true;$('#feedQuestion').hidden=true;
+  $('#feedStatus').textContent='謝謝你陪狗狗吃飯！🐶💖';
+  $('#feedActions').hidden=false;$('#feedRestart').focus();
+}
+$('#feedRestart').onclick=startFeeding;
+$('#feedHome').onclick=goHub;
 function hideAll(){['hub','menu','over','lib','free'].forEach(i=>$('#'+i).hidden=true)}
 function goHub(){
   running=false;freeOn=false;target=null;mons=[];
   document.querySelectorAll('.mon,.star').forEach(e=>e.remove());
+  clearTimeout(feedRefillTimer);feedRefillTimer=null;
+  document.body.classList.remove('feeding');
+  pictureMode=false;updateFX();
   hideAll();$('#hub').hidden=false;
   try{speechSynthesis.cancel()}catch(e){}
 }
@@ -571,11 +751,16 @@ function freeDel(){const t=$('#freeText');if(t.lastChild)t.removeChild(t.lastChi
 $('#freeClear').onclick=()=>{$('#freeText').innerHTML='';$('#bigKey').innerHTML='';$('#freeHint').style.visibility='visible';inp.focus()};
 $('#freeBack').onclick=goHub;
 $('#menuBack').onclick=goHub;
-document.querySelector('[data-type=game]').onclick=()=>{$('#hub').hidden=true;$('#menu').hidden=false;tone(520,.08)};
+function showGameMenu(){
+  $('#hub').hidden=true;$('#menu').hidden=false;tone(520,.08);
+}
+document.querySelector('[data-type=game]').onclick=showGameMenu;
+document.querySelector('[data-type=picture]').onclick=startFeeding;
 document.querySelector('[data-type=free]').onclick=()=>{freeShow();tone(520,.08)};
 document.querySelector('[data-type=abc]').onclick=()=>{$('#hub').hidden=true;tone(520,.08);start('letters')};
 $('#free').addEventListener('pointerdown',e=>{if(!e.target.closest('button'))inp.focus()});
-let FX=null,combo=0;
+let FX=null,combo=0,fxEnabled=true;
+function updateFX(){if(FX)FX.setOn(fxEnabled&&!pictureMode)}
 function fxBoom(m,bad){if(FX&&FX.on)FX.boom(m,bad)}
 (function(){
   try{
@@ -769,11 +954,10 @@ function fxBoom(m,bad){if(FX&&FX.on)FX.boom(m,bad)}
 (function(){
   const b=$('#fxBtn');
   if(!FX){b.style.display='none';return}
-  let on=true;
-  try{on=localStorage.getItem('typing-3d')!=='0'}catch(e){}
-  const set=v=>{if(FX)FX.setOn(v);b.textContent='✨ 3D 畫面：'+(v?'開':'關')};
-  set(on);
-  b.onclick=()=>{on=!on;set(on);try{localStorage.setItem('typing-3d',on?'1':'0')}catch(e){}};
+  try{fxEnabled=localStorage.getItem('typing-3d')!=='0'}catch(e){}
+  const set=()=>{updateFX();b.textContent='✨ 3D 畫面：'+(fxEnabled?'開':'關')};
+  set();
+  b.onclick=()=>{fxEnabled=!fxEnabled;set();try{localStorage.setItem('typing-3d',fxEnabled?'1':'0')}catch(e){}};
 })();
 mons=[];hearts();
 </script>

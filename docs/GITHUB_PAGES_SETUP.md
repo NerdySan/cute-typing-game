@@ -4,10 +4,10 @@
 完成後網址會長這樣：
 
 ```
-https://<你的帳號>.github.io/<倉庫名稱>/
+https://nerdysan.github.io/cute-typing-game/
 ```
 
-> 遊戲只有一個 `index.html`，不需要伺服器、資料庫或建置步驟，所以非常適合 GitHub Pages。
+> 遊戲使用 `index.html` 和 `assets` 圖片資料夾，不需要伺服器、資料庫或建置步驟，所以非常適合 GitHub Pages。
 
 ---
 
@@ -48,7 +48,7 @@ https://<你的帳號>.github.io/<倉庫名稱>/
 2. **Build and deployment → Source** 選 **Deploy from a branch**。
 3. **Branch** 選 `main`，資料夾選 `/ (root)`，按 **Save**。
 4. 等 1 到 2 分鐘，重新整理這個頁面，上方會出現：
-   **Your site is live at `https://<你的帳號>.github.io/<倉庫名稱>/`** 🎉
+   **Your site is live at `https://nerdysan.github.io/cute-typing-game/`** 🎉
 
 > 如果之後想改用自動部署（CI/CD），把 **Source** 改成 **GitHub Actions**，詳見 [CICD.md](CICD.md)。
 > 兩種不要同時使用。
@@ -63,7 +63,7 @@ https://<你的帳號>.github.io/<倉庫名稱>/
 git init -b main
 git add .
 git commit -m "feat: 第一版萌萌打字大冒險"
-git remote add origin https://github.com/<你的帳號>/<倉庫名稱>.git
+git remote add origin https://github.com/NerdySan/cute-typing-game.git
 git push -u origin main
 ```
 
@@ -80,7 +80,7 @@ git push -u origin main
 ## 上傳前請先做的 3 件事
 
 1. **修改授權人名稱**：打開 `LICENSE`，把 `<你的名字或組織 / YOUR NAME>` 換成你的名字。
-2. **修改 README 的連結**：把 `README.md` 裡所有的 `<你的帳號>` 與 `<你的倉庫>` 換成真的名稱（建議用編輯器的「取代全部」）。
+2. **確認 README 的連結**：專案中的 GitHub 帳號與倉庫連結已設定為 `NerdySan/cute-typing-game`。
 3. **本機測試一次**：在專案資料夾執行 `npm start`，用瀏覽器開 <http://localhost:8080>，確認遊戲能玩。
 
 ---
@@ -98,7 +98,7 @@ git push -u origin main
 ## 使用自己的網域（可選）
 
 1. 在網域商那邊新增一筆 DNS 記錄：
-   - 子網域（例如 `game.example.com`）：**CNAME** 指向 `<你的帳號>.github.io`
+   - 子網域（例如 `game.example.com`）：**CNAME** 指向 `nerdysan.github.io`
    - 根網域（`example.com`）：新增 **A** 記錄，IP 請以 [GitHub 官方文件](https://docs.github.com/pages/configuring-a-custom-domain-for-your-github-pages-site) 為準
 2. 到 **Settings → Pages → Custom domain** 填入網域，按 **Save**。
 3. DNS 生效後，勾選 **Enforce HTTPS**。
