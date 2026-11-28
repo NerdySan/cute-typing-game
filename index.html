@@ -18,6 +18,11 @@ html,body{height:100%;margin:0}
 body{font-family:"Fredoka","Zen Maru Gothic","PingFang TC","Microsoft JhengHei",sans-serif;color:var(--ink);background:var(--sky1);display:flex;flex-direction:column;overflow:hidden;user-select:none;-webkit-user-select:none}
 header{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;padding:10px 14px;background:var(--card);border-bottom:4px solid var(--accent2);font-weight:700;font-size:calc(18px*var(--hs))}
 header .hearts{font-size:calc(20px*var(--hs));letter-spacing:1px}
+#assetError{position:fixed;top:8px;left:50%;transform:translateX(-50%);z-index:20;margin:0;padding:10px 16px;border:3px solid #c64a61;border-radius:14px;background:#fff3e8;color:#702d42;font-size:15px}
+#assetError[hidden]{display:none}
+#voiceNotice{position:fixed;left:50%;bottom:12px;transform:translateX(-50%);z-index:20;width:max-content;max-width:calc(100% - 24px);margin:0;padding:8px 12px;border:2px solid #d59d60;border-radius:14px;background:#fff8e6;color:#704b38;font-size:14px;box-shadow:0 3px 10px #0002}
+#voiceNotice[hidden]{display:none}
+#voiceNotice button{margin-left:8px;padding:2px 6px;border-radius:8px;background:#ffe4b6;color:#704b38}
 button{font:inherit;cursor:pointer;border:0}
 .icon{background:none;font-size:calc(22px*var(--hs));padding:2px 6px}
 #stage{flex:1;position:relative;overflow:hidden;background:linear-gradient(var(--sky1),var(--sky2))}
@@ -29,11 +34,39 @@ button{font:inherit;cursor:pointer;border:0}
 .feeding #feedGame{display:flex;flex-direction:column;align-items:center;justify-content:safe center;gap:8px}
 .feeding .cloud,.feeding #ground,.feeding #hint,.feeding #msg{display:none}
 body.feeding #levelStat,body.feeding #hearts,body.feeding #spd{display:none}
+#mazeGame{display:none;position:absolute;inset:0;z-index:2;overflow-y:auto;padding:12px;background:linear-gradient(160deg,#d9efff,#fff1db 60%,#f7dcea);color:#4a3b6b;text-align:center}
+.mazing #mazeGame{display:flex;flex-direction:column;align-items:center;justify-content:safe center;gap:8px}
+.mazing .cloud,.mazing #ground,.mazing #hint,.mazing #msg{display:none}
+body.mazing #levelStat,body.mazing #hearts,body.mazing #spd{display:none}
+#mazeGame h2,#mazeGame p{margin:0}
+#mazeProgress{font-weight:700;color:#9c4a60}
+#mazeView{position:relative;width:min(100%,720px);aspect-ratio:2/1;border:7px solid #9a6b96;border-radius:26px;overflow:hidden;background:#d6b7df;box-shadow:inset 0 0 0 3px #fff3d2,0 7px 0 #805781,0 14px 24px #80578140}
+#mazeCanvas{display:block;width:100%;height:100%}
+#mazeObject{position:absolute;left:50%;top:48%;transform:translate(-50%,-50%);width:min(48%,210px);aspect-ratio:1;display:flex;align-items:center;justify-content:center;border:5px solid #fff4d6;border-radius:50%;background:radial-gradient(circle at 35% 25%,#fff,#fff1db 70%,#ffd1c2);box-shadow:0 6px 0 #9a6b9688,0 10px 24px #6b426e55,inset 0 0 0 4px #ffcfb4;font-size:clamp(64px,16vw,120px);line-height:1;text-shadow:0 4px 5px #9a6b9655}
+#mazeObject::before,#mazeObject::after{position:absolute;font-size:clamp(18px,3vw,27px);text-shadow:none}
+#mazeObject::before{content:"✨";top:4%;left:0}
+#mazeObject::after{content:"🌼";right:0;bottom:2%}
+#mazeImage{width:88%;height:88%}
+#mazeImage[hidden]{display:none}
+#mazeView.moving #mazeObject{visibility:hidden}
+#mazeFireworks{position:fixed;inset:0;z-index:10;overflow:hidden;pointer-events:none}
+#mazeFireworks[hidden]{display:none}
+#mazeFireworksCanvas{position:absolute;inset:0;width:100%;height:100%}
+#mazeFireworks .celebration{position:absolute;top:clamp(64px,9vh,100px);left:50%;transform:translateX(-50%);padding:3px 12px;border:2px solid #fff3bd;border-radius:20px;background:#a74c83e8;color:#fff9dc;font-size:clamp(14px,3vw,22px);font-weight:900;white-space:nowrap;box-shadow:0 3px 10px #38204466}
+#mazeQuestion{width:min(100%,440px);padding:8px 12px 10px;border:4px solid #ffc95c;border-radius:22px;background:#fffdf6;box-shadow:0 5px 0 #e7b980}
+#mazeMeaning{font-weight:700}
+#mazeQuestion .word{max-width:100%;font-size:clamp(18px,calc(26px*var(--s)),36px);white-space:normal;overflow-wrap:anywhere;letter-spacing:1px}
+#mazeStatus{min-height:1.5em;font-weight:700}
+#mazeActions{display:flex;flex-wrap:wrap;justify-content:center;gap:12px}
+#mazeActions[hidden]{display:none}
+#mazeMotion[hidden]{display:none}
+#mazeActions .btn{width:auto;margin:0;padding:10px 18px;font-size:18px}
+@media (max-width:420px){#mazeGame{padding:8px;gap:5px}#mazeView{border-width:4px}}
 #feedGame h2{margin:0;font-size:clamp(20px,4vh,30px)}
 #feedGame p{margin:0;font-size:15px}
 #feedGame #feedLevel{font-size:clamp(16px,2.8vh,22px);font-weight:700;color:#9c4a60}
 #feedQuestion{width:min(100%,440px);padding:10px 16px 14px;border:4px solid #ffc95c;border-radius:28px;background:#fffdf6;box-shadow:0 6px 0 #e7b980}
-#feedIcon{font-size:clamp(42px,10vh,76px);line-height:1.2}
+#feedIcon img{width:clamp(52px,10vh,86px);height:clamp(52px,10vh,86px);display:block;margin:auto}
 #feedQuestion .word{max-width:100%;font-size:clamp(18px,calc(26px*var(--s)),38px);white-space:normal;overflow-wrap:anywhere;border-color:#ffc95c;background:#fff8e6;color:#4a3b6b}
 #feedAnimals{display:flex;align-items:end;justify-content:center;gap:clamp(4px,4vw,25px);width:100%}
 #feedDog{position:relative;width:clamp(100px,25vh,220px);max-width:48%;aspect-ratio:550/670;transform-origin:50% 90%;animation:dogBreathe 3s ease-in-out infinite}
@@ -69,7 +102,6 @@ body.feeding #levelStat,body.feeding #hearts,body.feeding #spd{display:none}
 .mon.locked svg{filter:drop-shadow(0 0 8px var(--accent2))}
 @keyframes bob{50%{transform:translateY(-6px) scale(1.04,.96)}}
 .word{display:inline-block;margin-top:2px;padding:3px 10px;background:var(--card);border:3px solid var(--accent);border-radius:18px;font-size:calc(22px*var(--s));font-weight:700;letter-spacing:2px;white-space:nowrap;color:var(--ink)}
-.word.big{font-size:calc(32px*var(--s));padding:0 16px}
 .word i{font-style:normal}
 .word i.d{color:var(--done)}
 .word i.n{text-decoration:underline;text-decoration-color:var(--accent);text-decoration-thickness:3px}
@@ -78,6 +110,7 @@ body.feeding #levelStat,body.feeding #hearts,body.feeding #spd{display:none}
 @keyframes shake{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
 .pop svg{animation:pop .45s forwards}
 .ico{width:calc(84px*var(--s));height:calc(84px*var(--s));margin:0 auto;border-radius:50%;border:6px solid #ff8fb1;background:#fffbe9;display:flex;align-items:center;justify-content:center;font-size:calc(44px*var(--s));line-height:1;animation:bob .9s ease-in-out infinite}
+.ico img{width:70%;height:70%}
 .locked .ico{filter:drop-shadow(0 0 8px var(--accent2))}
 .pop .ico{animation:pop .45s forwards}
 .pop .word{opacity:0}
@@ -115,19 +148,25 @@ body.feeding #levelStat,body.feeding #hearts,body.feeding #spd{display:none}
 .type small{display:block;font-size:13px;font-weight:500;opacity:.8}
 .type[data-type=game]{background:#ff9fc4}
 .type[data-type=picture]{background:#ffca91}
+.type[data-type=maze]{background:#ffddbb}
 .type[data-type=free]{background:#7fe0b5}
-.type[data-type=abc]{background:#c6b3ff}
 .type[data-type=lib]{background:#ffd24d}
 .type:active{transform:translateY(4px);box-shadow:0 1px 0 #0003}
-#free{background:linear-gradient(var(--sky1),var(--sky2));padding:12px;z-index:6}
-.freeBox{flex:1;min-width:0;display:flex;flex-direction:column;gap:8px}
-.freeTop{display:flex;align-items:center;justify-content:space-between;gap:8px;font-weight:700;font-size:18px}
-#bigKey{flex:none;height:clamp(110px,26vh,210px);display:flex;align-items:center;justify-content:center;font-size:clamp(90px,22vh,190px);font-weight:900;line-height:1}
-#bigKey span{display:inline-block;animation:bigpop .35s}
-@keyframes bigpop{0%{transform:scale(.3) rotate(-12deg);opacity:0}60%{transform:scale(1.2) rotate(4deg)}100%{transform:scale(1);opacity:1}}
-#freeText{flex:1;min-height:0;overflow-y:auto;background:var(--card);border-radius:24px;border:5px solid var(--accent2);padding:14px;font-size:calc(40px*var(--s));font-weight:700;line-height:1.35;word-break:break-all;letter-spacing:3px}
-.fl{display:inline-block;animation:bigpop .3s}
-.freeHint{text-align:center;font-size:16px;opacity:.75}
+#free{background:linear-gradient(#c9efff,#fff3df 75%,#ffe4ee);padding:8px;z-index:6;color:#4a3b6b}
+.freeBox{flex:1;min-width:0;min-height:0;display:flex;flex-direction:column;align-items:center;gap:4px}
+.freeTop{width:100%;display:flex;flex-wrap:wrap;align-items:center;gap:6px 14px;font-weight:700;font-size:18px}
+.freeTitle{margin-right:auto;white-space:nowrap}
+.freeActions{display:flex;gap:6px;margin-left:auto}
+.freeInfo{font-size:14px;white-space:nowrap}
+.candySettings{display:flex;align-items:center;gap:4px;font-size:14px;white-space:nowrap}
+.candySettings .btn.mini{min-width:32px;height:32px;padding:2px 6px;border:2px solid #dda6c5;border-radius:10px;background:#fff9f3;color:#4a3b6b;box-shadow:none}
+.candySettings button:disabled{opacity:.45;cursor:not-allowed}
+.freeHint{margin:0;text-align:center;font-size:13px;min-height:1.4em}
+@media (max-width:600px){.freeTop{display:grid;grid-template-columns:1fr auto;grid-template-areas:"title score" "settings actions";gap:6px}.freeTitle{grid-area:title}.freeActions{grid-area:actions}.candySettings{grid-area:settings}.freeInfo{grid-area:score}.freeActions .btn.mini{font-size:13px;padding:5px 7px}.candySettings>span:first-child{font-size:0}.candySettings>span:first-child::after{content:"消除";font-size:13px}#candyShake span{display:none}#candyShake::after{content:"搖"}}
+@media (max-width:360px){.freeActions{gap:4px}.freeActions .btn.mini{font-size:12px;padding:5px}.candySettings{font-size:12px}}
+.candyArea{flex:1;min-height:180px;width:100%;position:relative;overflow:hidden;border:4px solid #e8afd0;border-radius:24px;background:linear-gradient(#ffffff55,#fffaf1aa);box-shadow:inset 0 -7px 0 #e8afd066}
+#candyBoard{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+#candyMotion[hidden]{display:none}
 #lib .panel{margin:0 auto;display:flex;flex-direction:column;padding:14px;min-height:0;text-align:left}
 #lib h2{margin:0;font-size:22px}
 .libHead{display:flex;align-items:center;justify-content:space-between}
@@ -137,6 +176,7 @@ body.feeding #levelStat,body.feeding #hearts,body.feeding #spd{display:none}
 .row{display:flex;align-items:center;gap:10px;padding:7px 8px;border-radius:14px;cursor:pointer}
 .row:nth-child(odd){background:#ffd24d26}
 .row .e{font-size:26px;width:34px;text-align:center}
+.row .e img{width:32px;height:32px;display:block}
 .row .en{font-weight:700;font-size:18px;flex:1}
 .row .zh{font-size:16px;opacity:.85}
 .themes{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;justify-content:center}
@@ -165,6 +205,8 @@ body.feeding #levelStat,body.feeding #hearts,body.feeding #spd{display:none}
   <button class="spd" id="spd" aria-label="切換速度">🐰 正常</button>
   <button class="icon" id="mute" aria-label="開關聲音">🔊</button>
 </header>
+<p id="assetError" role="alert" hidden>遊戲資源載入失敗，請確認 assets 資料夾完整。</p>
+<p id="voiceNotice" role="alert" hidden><span id="voiceNoticeText"></span><button id="voiceNoticeClose" aria-label="關閉語音提示">✖</button></p>
 <div id="stage">
   <div class="cloud" style="top:12%;animation-delay:-10s"></div>
   <div class="cloud" style="top:38%;animation-delay:-38s;transform:scale(.7)"></div>
@@ -174,7 +216,7 @@ body.feeding #levelStat,body.feeding #hearts,body.feeding #spd{display:none}
     <p id="feedLevel"></p>
     <p id="feedIntro">打出圖像下方的單字，讓狗狗吃一口～</p>
     <div id="feedQuestion">
-      <div id="feedIcon" aria-hidden="true"></div>
+      <div id="feedIcon" aria-hidden="true"><img id="feedImage" alt=""></div>
       <div class="word"></div>
     </div>
     <div id="feedAnimals">
@@ -218,6 +260,27 @@ body.feeding #levelStat,body.feeding #hearts,body.feeding #spd{display:none}
       <button class="btn" id="feedHome">回到首頁</button>
     </div>
   </div>
+  <div id="mazeGame">
+    <h2>🧭 單字迷宮大冒險</h2>
+    <p id="mazeProgress"></p>
+    <p>打出單字，一起探索迷宮吧！</p>
+    <div id="mazeView">
+      <canvas id="mazeCanvas" width="640" height="320" aria-label="第一人稱迷宮走廊"></canvas>
+      <span id="mazeObject" role="img">
+        <img id="mazeImage" alt="" hidden>
+      </span>
+    </div>
+    <div id="mazeQuestion">
+      <div id="mazeMeaning"></div>
+      <div class="word"></div>
+    </div>
+    <p id="mazeStatus" aria-live="polite"></p>
+    <div id="mazeActions" hidden>
+      <button class="btn p" id="mazeRestart">再探險一次</button>
+      <button class="btn" id="mazeHome">回到首頁</button>
+      <button class="btn g" id="mazeMotion" aria-pressed="false" hidden>播放煙火動畫</button>
+    </div>
+  </div>
   <div class="msg" id="msg"></div>
   <div class="hint" id="hint"></div>
   <div id="ground"><span>🌷</span><span>🏡</span><span>🐰</span><span>🌼</span><span>🍄</span></div>
@@ -230,17 +293,39 @@ body.feeding #levelStat,body.feeding #hearts,body.feeding #spd{display:none}
       <p>選一個想玩的遊戲吧！</p>
       <button class="type" data-type="game"><span>🐙</span><div><b>單字打怪物</b><small>短單字、長單字，可選難度和主題</small></div></button>
       <button class="type" data-type="picture"><span>🐶</span><div><b>單字圖像大冒險</b><small>打單字，陪狗狗開心吃飯</small></div></button>
-      <button class="type" data-type="abc"><span>🔤</span><div><b>ABC 字母打怪物</b><small>一次打一個字母，最適合剛開始學</small></div></button>
-      <button class="type" data-type="free"><span>⌨️</span><div><b>自由敲敲樂</b><small>隨便敲鍵盤，看字母跳出來</small></div></button>
+      <button class="type" data-type="maze"><span>🧭</span><div><b>單字迷宮大冒險</b><small>打對單字，轉彎探索可愛迷宮</small></div></button>
+      <button class="type" data-type="free"><span>⌨️</span><div><b>自由敲敲樂</b><small>打字母和數字，連成同色消消樂</small></div></button>
       <button class="type" data-type="lib" id="libBtn"><span>📖</span><div><b>單字字庫</b><small>中英文對照，可依分類查詢</small></div></button>
     </div>
   </div>
   <div class="overlay" id="free" hidden>
     <div class="freeBox">
-      <div class="freeTop"><span>⌨️ 自由敲敲樂</span><span><button class="btn mini" id="freeClear">🧹 清除</button> <button class="btn mini p" id="freeBack">🏠 回選單</button></span></div>
-      <div id="bigKey" aria-hidden="true"></div>
-      <div id="freeText"></div>
-      <div class="freeHint" id="freeHint">隨便敲敲鍵盤吧！</div>
+      <div class="freeTop">
+        <span class="freeTitle">⌨️ 自由敲敲樂</span>
+        <div class="candySettings" role="group" aria-label="同色消除數量">
+          <span>同色消除</span>
+          <button class="btn mini o" id="candyLess" aria-label="減少消除數量">−</button>
+          <output id="candyCount" aria-live="polite">3</output><span>顆</span>
+          <button class="btn mini o" id="candyMore" aria-label="增加消除數量">+</button>
+        </div>
+        <div class="freeInfo">🍬 已消除 <span id="candyScore">0</span> 顆</div>
+        <span class="freeActions"><button class="btn mini g" id="candyShake" aria-label="搖一搖" title="搖一搖">🌀<span> 搖一搖</span></button><button class="btn mini" id="freeClear">🧹 清除</button><button class="btn mini p" id="freeBack">🏠 回選單</button></span>
+      </div>
+      <p class="freeHint" id="freeHint" aria-live="polite">打字母或數字讓糖果落下！3 顆以上同色碰在一起就會消除。</p>
+      <button class="btn mini g" id="candyMotion" hidden>播放落下動畫</button>
+      <div class="candyArea" role="img" aria-label="字母和數字糖果遊戲區">
+        <canvas id="candyBoard" aria-hidden="true"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class="overlay" id="mazeMenu" hidden>
+    <div class="panel">
+      <div class="buddies">🧭🌟</div>
+      <h1>單字迷宮大冒險</h1>
+      <p>選擇想玩的迷宮模式！</p>
+      <button class="btn o" id="mazeBack">← 回選單</button>
+      <button class="btn g" id="mazeChallenge">🏁 十站挑戰<small>通過十站，找到出口</small></button>
+      <button class="btn p" id="mazeEndless">♾️ 無限模式<small>持續探索、練習單字，隨時可回首頁</small></button>
     </div>
   </div>
   <div class="overlay" id="menu" hidden>
@@ -291,26 +376,32 @@ body.feeding #levelStat,body.feeding #hearts,body.feeding #spd{display:none}
     </div>
   </div>
 </div>
+<div id="mazeFireworks" aria-hidden="true" hidden>
+  <canvas id="mazeFireworksCanvas"></canvas>
+  <div class="celebration">🎉 恭喜破關！ 🎉</div>
+</div>
 
+<script src="assets/word-images.js" onerror="document.getElementById('assetError').hidden=false"></script>
+<script src="assets/maze-art.js" onerror="document.getElementById('assetError').hidden=false"></script>
+<script src="assets/maze-fireworks.js" onerror="document.getElementById('assetError').hidden=false"></script>
+<script src="assets/vendor/matter.min.js" onerror="document.getElementById('assetError').hidden=false"></script>
+<script src="assets/candy-physics.js" onerror="document.getElementById('assetError').hidden=false"></script>
 <script>
 const $=s=>document.querySelector(s);
 const stage=$('#stage'),inp=$('#inp');
+function reportAssetError(path){
+  console.error('遊戲資源載入失敗：',path);
+  $('#assetError').textContent='圖片載入失敗：'+path+'，請確認遊戲資源檔案完整。';
+  $('#assetError').hidden=false;
+}
+document.addEventListener('error',e=>{
+  if(e.target instanceof HTMLImageElement)reportAssetError(e.target.getAttribute('src'));
+},true);
 const WORDS={
   short:['cat','dog','sun','hat','pig','bee','cup','car','bus','egg','cow','fox','hen','jam','map','owl','pen','toy','zoo','ant','bed','bag','box','cap','day','ear','eye','fan','hug','ice','key','leg','lip','net','nut','pot','rat','red','sea','tea','top','van','web','yes','zip','bat','bun','fly','gum','hop','joy','kid','log','mud','nap','pie','rug','arm','bow','bug','dad','mom','gem','pan','pup','sad','tub','wet','yam','cry','run','eat','toe','gym','ham','oat','tie','fish','milk','star','moon','cake','frog','bear','duck','tree','book','bird','kite','rain','ball','lion','snow','wolf','rice','gift','jump','play','sing','swim','farm','fire','hand','hill','home','lamp','leaf','lake','nest','pond','sand','ship','shoe','sock','song','soup','tent','toad','wind','wing','worm','bean','corn','dove','fork','goat','hair','kiss','moth','oven','park','rock','seed','bone','bowl','chef','coat','dish','door','drum','face','feet','flag','foot','hero','hike','hole','jazz','king','lava','lock','love','luck','mask','meat','nose','palm','pine','road','salt','sofa','swan','taco','town','wand','wish','yoga','body','snail','plant','grape','lemon','mouse','horse','zebra','snake','whale','shark','robot','river','beach','cloud','sheep','heart','angel','bacon','berry','bunny','chair','chick','clown','crown','daisy','dance','dream','dress','drink','fairy','fruit','ghost','glove','house','laugh','money','mouth','movie','nurse','olive','party','phone','piano','pilot','queen','radio','shirt','skate','sleep','spoon','sweet','teeth','torch','tower','watch','water','wheat','witch','woman','clean','magic','night','rhino','scarf','sloth','tulip','donut','squid','angry','silly','funny','tooth'],
   long:['apple','tiger','panda','candy','pizza','happy','smile','puppy','kitten','orange','yellow','garden','school','window','candle','jungle','bridge','rabbit','banana','monkey','flower','rocket','cookie','turtle','pencil','dragon','castle','butter','cheese','cherry','coffee','doctor','family','finger','forest','friend','guitar','hammer','island','jacket','ladder','magnet','mirror','number','pillow','planet','pirate','pocket','potato','shadow','spider','sister','summer','winter','tomato','tunnel','valley','violin','wizard','peanut','anchor','animal','bakery','basket','bucket','cactus','camera','carrot','cereal','circus','clover','cowboy','dinner','farmer','giggle','helmet','hotdog','jigsaw','lizard','museum','pepper','picnic','puzzle','ribbon','sailor','salmon','soccer','sponge','sprout','ticket','toilet','trophy','turkey','yogurt','sleepy','teapot','cinema','chicken','monster','bicycle','cabbage','dolphin','feather','holiday','kitchen','lantern','mermaid','pretzel','rainbow','teacher','pumpkin','balloon','penguin','giraffe','ladybug','snowman','volcano','dentist','dessert','lobster','mailbox','rooster','slipper','sparrow','stadium','sweater','trumpet','unicorn','village','weather','wedding','excited','dinosaur','elephant','sunshine','umbrella','princess','airplane','backpack','kangaroo','treasure','alphabet','birthday','goldfish','butterfly','blueberry','crocodile','fireworks','hamburger','telescope','strawberry','watermelon','playground']
 };
-const EMO={};
-('cat🐱 dog🐶 sun☀️ hat🎩 pig🐷 bee🐝 cup☕ car🚗 bus🚌 egg🥚 cow🐮 fox🦊 hen🐔 jam🍓 map🗺️ owl🦉 pen🖊️ toy🧸 zoo🦁 ant🐜 bed🛏️ bag👜 box📦 cap🧢 day🌞 ear👂 eye👁️ fan🌀 hug🤗 ice🧊 key🔑 leg🦵 lip👄 net🥅 nut🥜 pot🍲 rat🐀 red🔴 sea🌊 tea🍵 top🔝 van🚐 web🕸️ yes👍 zip🤐 bat🦇 bun🍞 fly🪰 gum🍬 hop🐇 joy😄 kid🧒 log🪵 mud🟤 nap😴 pie🥧 rug🧶 '+
-'fish🐟 milk🥛 star⭐ moon🌙 cake🍰 frog🐸 bear🐻 duck🦆 tree🌳 book📖 bird🐦 kite🪁 rain🌧️ ball⚽ lion🦁 snow❄️ wolf🐺 rice🍚 gift🎁 jump🤸 play🎮 sing🎤 swim🏊 farm🚜 fire🔥 hand✋ hill⛰️ home🏠 lamp💡 leaf🍃 lake🏞️ nest🐣 pond🏞️ sand🏖️ ship🚢 shoe👟 sock🧦 song🎵 soup🍜 tent⛺ toad🐸 wind🌬️ wing🦅 worm🐛 bean🌱 corn🌽 dove🕊️ fork🍴 goat🐐 hair💇 kiss💋 moth🦋 oven♨️ park🏞️ rock🗿 seed🌱 snail🐌 plant🪴 grape🍇 lemon🍋 mouse🐭 horse🐴 zebra🦓 snake🐍 whale🐳 shark🦈 robot🤖 river🏞️ beach🏖️ cloud☁️ sheep🐑 heart❤️ '+
-'apple🍎 tiger🐯 panda🐼 candy🍭 pizza🍕 happy😊 smile😀 puppy🐶 kitten🐱 orange🍊 yellow🟡 garden🌻 school🏫 window🪟 candle🕯️ jungle🌴 bridge🌉 chicken🐔 rabbit🐰 banana🍌 monkey🐵 flower🌸 rocket🚀 cookie🍪 turtle🐢 pencil✏️ dragon🐉 castle🏰 butter🧈 cheese🧀 cherry🍒 coffee☕ doctor👨‍⚕️ family👨‍👩‍👧 finger☝️ forest🌲 friend🤝 guitar🎸 hammer🔨 island🏝️ jacket🧥 magnet🧲 monster👾 number🔢 pillow🛏️ planet🪐 pirate🏴‍☠️ pocket👖 potato🥔 shadow👤 spider🕷️ sister👧 summer🏖️ winter⛄ tomato🍅 tunnel🚇 valley🏞️ violin🎻 wizard🧙 bicycle🚲 cabbage🥬 dolphin🐬 holiday🎉 kitchen🍳 lantern🏮 mermaid🧜 peanut🥜 pretzel🥨 rainbow🌈 teacher👩‍🏫 pumpkin🎃 balloon🎈 penguin🐧 giraffe🦒 dinosaur🦖 elephant🐘 sunshine🌞 butterfly🦋 umbrella☂️ princess👸 airplane✈️ backpack🎒 crocodile🐊 fireworks🎆 hamburger🍔 kangaroo🦘 ladybug🐞 snowman⛄ strawberry🍓 telescope🔭 treasure💎 volcano🌋 watermelon🍉 playground🎠 '+
-'crab🦀 deer🦌 lamb🐑 koala🐨 camel🐪 eagle🦅 parrot🦜 octopus🐙 buffalo🐃 hamster🐹 squirrel🐿️ chipmunk🐿️ flamingo🦩 hedgehog🦔 '+
-'pear🍐 cola🥤 melon🍈 mango🥭 peach🍑 juice🧃 salad🥗 honey🍯 onion🧅 pasta🍝 toast🍞 cream🍦 steak🥩 bread🍞 noodles🍜 pancake🥞 cupcake🧁 sandwich🥪 spaghetti🍝 broccoli🥦 chocolate🍫 popcorn🍿 cucumber🥒 '+
-'sky🌤️ fog🌫️ rose🌹 ocean🌊 grass🌿 storm⛈️ shell🐚 petal🌸 wave🌊 cave🕳️ mist🌫️ thunder⚡ meadow🌼 sunrise🌅 sunset🌇 mountain🏔️ waterfall💦 snowflake❄️ blossom🌸 desert🏜️ glacier🧊 lightning⚡ rainforest🌴 '+
-'jet✈️ cab🚕 boat⛵ bike🚲 taxi🚕 tram🚋 train🚆 truck🚚 plane✈️ sled🛷 cart🛒 yacht🛥️ ferry⛴️ jeep🚙 tractor🚜 scooter🛴 subway🚇 ambulance🚑 sailboat⛵ skateboard🛹 helicopter🚁 motorcycle🏍️ spaceship🚀 firetruck🚒 '+
-'ufo🛸 mars🔴 earth🌍 comet☄️ orbit🪐 alien👽 space🌌 light💡 dark🌑 solar☀️ fuel⛽ galaxy🌌 meteor☄️ saturn🪐 jupiter🪐 asteroid☄️ eclipse🌑 astronaut👨‍🚀 satellite🛰️ universe🌌 starship🚀 moonlight🌙 '+
-'art🎨 read📖 bell🔔 class🏫 ruler📏 paper📄 clock🕐 write✍️ story📚 quiz❓ test📝 note📝 draw🖍️ paint🎨 lunch🍱 music🎵 sport🏀 math➗ student🧑‍🎓 library📚 lesson📖 lunchbox🍱 notebook📓 scissors✂️ homework📝 crayon🖍️ marker🖍️ classroom🏫 calendar📅 '+
-'dot⚫ blue🔵 pink🩷 gold🟡 cube🧊 black⚫ white⚪ brown🟤 green🟢 round🔴 purple🟣 circle⭕ square🟦 diamond🔷 triangle🔺 crescent🌙 violet🟣 octagon🛑 blueberry🫐 feather🪶 ladder🪜 mirror🪞 otter🦦 pineapple🍍 seal🦭 stone🪨 arm💪 bow🎀 bug🐛 dad👨 mom👩 gem💎 pan🍳 pup🐶 sad😢 tub🛁 wet💧 yam🍠 cry😭 run🏃 eat🍽️ toe🦶 gym🏋️ ham🍖 oat🌾 tie👔 bone🦴 bowl🥣 chef👨‍🍳 coat🧥 dish🍽️ door🚪 drum🥁 face😊 feet🦶 flag🏳️ foot🦶 hero🦸 hike🥾 hole🕳️ jazz🎷 king🤴 lava🌋 lock🔒 love💕 luck🍀 mask😷 meat🍖 nose👃 palm🌴 pine🌲 road🛣️ salt🧂 sofa🛋️ swan🦢 taco🌮 town🏘️ wand🪄 wish🌠 yoga🧘 angel👼 bacon🥓 berry🍓 bunny🐰 chair🪑 chick🐥 clown🤡 crown👑 daisy🌼 dance💃 dream💭 dress👗 drink🥤 fairy🧚 fruit🍎 ghost👻 glove🧤 house🏠 laugh😂 money💰 mouth👄 movie🎬 nurse👩‍⚕️ olive🫒 party🥳 phone📱 piano🎹 pilot👨‍✈️ queen👸 radio📻 shirt👕 skate⛸️ sleep😴 spoon🥄 sweet🍬 teeth🦷 torch🔦 tower🗼 watch⌚ water💧 wheat🌾 witch🧙‍♀️ woman👩 clean🧼 magic🪄 night🌃 rhino🦏 scarf🧣 sloth🦥 tulip🌷 donut🍩 squid🦑 angry😠 silly🤪 funny🤣 tooth🦷 body🧍 alphabet🔤 anchor⚓ animal🐾 bakery🥐 basket🧺 birthday🎂 bucket🪣 cactus🌵 camera📷 carrot🥕 cereal🥣 circus🎪 clover🍀 cowboy🤠 dentist🦷 dessert🍨 dinner🍽️ farmer🧑‍🌾 giggle😆 goldfish🐠 helmet⛑️ hotdog🌭 jigsaw🧩 lizard🦎 lobster🦞 mailbox📬 museum🏛️ pepper🌶️ picnic🧺 puzzle🧩 ribbon🎀 rooster🐓 sailor⚓ salmon🐟 slipper🩴 soccer⚽ sparrow🐦 sponge🧽 sprout🌱 stadium🏟️ sweater🧥 ticket🎫 toilet🚽 trophy🏆 trumpet🎺 turkey🦃 unicorn🦄 village🏘️ weather🌤️ wedding💒 yogurt🥛 sleepy😴 excited🤩 teapot🫖 cinema🎬 pony🐴 bull🐂 hawk🦅 hippo🦛 bison🦬 caterpillar🐛 peacock🦚 reindeer🦌 bumblebee🐝 gorilla🦍 leopard🐆 raccoon🦝 duckling🐥 kiwi🥝 dumpling🥟 muffin🧁 burrito🌯 waffle🧇 pudding🍮 lollipop🍭 sausage🌭 omelet🍳 lettuce🥬 avocado🥑 coconut🥥 garlic🧄 mushroom🍄 eggplant🍆 bagel🥯 croissant🥐 maple🍁 sunflower🌻 seashell🐚 tornado🌪️ bamboo🎍 autumn🍂 spring🌸 kayak🛶 canoe🛶 metro🚇 crane🏗️ trolley🚎 monorail🚝 rickshaw🛺 rowboat🚣 speedboat🚤 minibus🚐 nebula🌌 cosmos🌌 shuttle🚀 midnight🌃 exam📝 page📄 color🎨 learn🎓 smart🧠 brain🧠 think💭 medal🏅 globe🌍 clip📎 pin📌 science🔬 reading📖 painting🖼️ microscope🔬 computer💻 keyboard⌨️ paintbrush🖌️ concert🎶 singer🎤 dancer💃 painter🎨 compass🧭 abacus🧮 graduate🎓 plus➕ arrow➡️ sparkle✨ ring💍')
-.split(' ').forEach(t=>{const m=t.match(/^([a-z]+)(.+)$/);if(m)EMO[m[1]]=m[2]});
+
 const COLORS=['#ff8fb1','#6fd8b4','#ffd24d','#b79bff','#ffa45c','#6fc3ff'];
 let mode,mons,score,lives,level,kills,target,last,spawn,running=false,muted=false,best=0,pictureMode=false;
 try{best=+localStorage.getItem('typing-best')||0}catch(e){}
@@ -327,6 +418,30 @@ function tone(f,d=.12,t='sine',v=.07){
     g.gain.exponentialRampToValueAtTime(.001,ac.currentTime+d);o.stop(ac.currentTime+d);
   }catch(e){}
 }
+function bubblePop(){
+  if(muted)return;
+  try{
+    ac=ac||new (window.AudioContext||window.webkitAudioContext)();
+    const now=ac.currentTime,osc=ac.createOscillator(),gain=ac.createGain();
+    osc.type='sine';
+    osc.frequency.setValueAtTime(650,now);
+    osc.frequency.exponentialRampToValueAtTime(1000,now+.04);
+    gain.gain.setValueAtTime(.001,now);
+    gain.gain.exponentialRampToValueAtTime(.12,now+.002);
+    gain.gain.exponentialRampToValueAtTime(.001,now+.09);
+    osc.connect(gain);gain.connect(ac.destination);osc.start(now);osc.stop(now+.09);
+
+    const buffer=ac.createBuffer(1,Math.ceil(ac.sampleRate*.018),ac.sampleRate);
+    const samples=buffer.getChannelData(0);
+    for(let i=0;i<samples.length;i++)samples[i]=Math.random()*2-1;
+    const noise=ac.createBufferSource(),noiseGain=ac.createGain(),filter=ac.createBiquadFilter();
+    noise.buffer=buffer;filter.type='lowpass';filter.frequency.value=2500;
+    noiseGain.gain.setValueAtTime(.025,now);
+    noiseGain.gain.exponentialRampToValueAtTime(.001,now+.018);
+    noise.connect(filter);filter.connect(noiseGain);noiseGain.connect(ac.destination);
+    noise.start(now);noise.stop(now+.018);
+  }catch(e){console.error('播放氣泡音效失敗：',e)}
+}
 const SPD=[{e:'🐢',n:'慢',k:.7,b:1},{e:'🐰',n:'正常',k:1,b:1},{e:'🚀',n:'快',k:1.5,b:2}];
 let spdIdx=1;
 $('#spd').onclick=()=>{
@@ -336,7 +451,7 @@ $('#spd').onclick=()=>{
   if(running)say(s.b>1?s.e+' 加速！星星 ×'+s.b:s.e+' '+s.n+'速');
   tone(400+spdIdx*150,.1);inp.focus();
 };
-$('#mute').onclick=()=>{muted=!muted;$('#mute').textContent=muted?'🔇':'🔊';inp.focus()};
+$('#mute').onclick=()=>{muted=!muted;$('#mute').textContent=muted?'🔇':'🔊';if(muted)stopSpeech();inp.focus()};
 
 /* ---------- monster art ---------- */
 function monsterSVG(c,k){
@@ -360,10 +475,6 @@ function monsterSVG(c,k){
 /* ---------- game ---------- */
 function pickWord(){
   const used=mons.map(m=>m.word[0]);
-  if(mode==='letters'){
-    const pool='asdfghjklqwertyuiopzxcvbnm'.split('').filter(l=>!used.includes(l)&&!recent.includes(l));
-    return pool[Math.floor(Math.random()*pool.length)];
-  }
   const bank=getBank(mode);
   const pool=bank.filter(w=>!used.includes(w[0])&&!recent.includes(w));
   return pool[Math.floor(Math.random()*pool.length)]||bank[Math.floor(Math.random()*bank.length)];
@@ -371,16 +482,16 @@ function pickWord(){
 function renderWord(m){
   const w=m.el.querySelector('.word');
   w.innerHTML=m.word.split('').map((ch,i)=>
-    '<i class="'+(i<m.i?'d':i===m.i&&(m===target||pictureMode)?'n':'')+'">'+(mode==='letters'?ch.toUpperCase():ch)+'</i>').join('');
+    '<i class="'+(i<m.i?'d':i===m.i&&(m===target||pictureMode||mode==='maze')?'n':'')+'">'+ch+'</i>').join('');
 }
 function addMonster(){
   const W=stage.clientWidth,word=pickWord();
-  recent.push(word);if(recent.length>(mode==='letters'?3:12))recent.shift();
+  recent.push(word);if(recent.length>12)recent.shift();
   const el=document.createElement('div');
   el.className='mon';
   const col=COLORS[Math.floor(Math.random()*COLORS.length)],kind=Math.floor(Math.random()*4);
-  const art=EMO[word]?'<div class="ico" style="border-color:'+col+'">'+EMO[word]+'</div>':monsterSVG(col,kind);
-  el.innerHTML=art+'<div class="word'+(mode==='letters'?' big':'')+'"></div>';
+  const art=WORD_IMAGES[word]?'<div class="ico" style="border-color:'+col+'"><img src="'+WORD_IMAGES[word]+'" alt=""></div>':monsterSVG(col,kind);
+  el.innerHTML=art+'<div class="word"></div>';
   const w=Math.round(100*SIZES[sizeIdx].m),p=Math.round(50*SIZES[sizeIdx].m);
   const x=p+Math.random()*Math.max(10,W-w-2*p);
   const m={el,word,i:0,x,y:-110,v:0,col,kind,ph:Math.random()*6};
@@ -395,7 +506,7 @@ function start(md){
   document.querySelectorAll('.mon,.star').forEach(e=>e.remove());
   mons=[];score=0;lives=5;level=1;kills=0;combo=0;target=null;spawn=.6;last=performance.now();running=true;
   $('#menu').hidden=true;$('#over').hidden=true;
-  $('#hint').textContent=md==='letters'?'看到字母，就按鍵盤上的同一個鍵！':'把單字一個字母一個字母打出來，打錯要重來喔！';
+  $('#hint').textContent='把單字一個字母一個字母打出來，打錯要重來喔！';
   hud();inp.focus();requestAnimationFrame(loop);
 }
 function loop(t){
@@ -443,7 +554,7 @@ function femaleVoice(){
   const en=speechSynthesis.getVoices().filter(v=>/^en/i.test(v.lang));
   const ok=en.filter(v=>!MALE_RE.test(v.name));
   const fem=ok.filter(x=>FEM_PREF.some(n=>x.name.includes(n)));
-  const pool=fem.length?fem:ok;
+  const pool=fem.length?fem:ok.length?ok:en;
   const sc=x=>(/natural|neural|online/i.test(x.name)?100:0)+(/premium|enhanced/i.test(x.name)?60:0)+(/^en[-_]US/i.test(x.lang)?20:0)-Math.max(0,FEM_PREF.findIndex(n=>x.name.includes(n)));
   let v=pool.slice().sort((a,b)=>sc(b)-sc(a))[0]||null;
   if(v)voiceCache=v;
@@ -451,27 +562,47 @@ function femaleVoice(){
 }
 const LETTER={a:'ay',b:'bee',c:'see',d:'dee',e:'ee',f:'eff',g:'jee',h:'aitch',i:'eye',j:'jay',k:'kay',l:'ell',m:'em',n:'en',o:'oh',p:'pee',q:'cue',r:'are',s:'ess',t:'tee',u:'you',v:'vee',w:'double you',x:'ex',y:'why',z:'zee'};
 const DIGIT=['zero','one','two','three','four','five','six','seven','eight','nine'];
-function speak(t,retry){
-  if(muted||!('speechSynthesis' in window))return;
+let lastVoiceNotice='';
+function voiceNotice(message){
+  if(message===lastVoiceNotice)return;
+  lastVoiceNotice=message;
+  $('#voiceNoticeText').textContent=message;
+  $('#voiceNotice').hidden=false;
+}
+$('#voiceNoticeClose').onclick=()=>{$('#voiceNotice').hidden=true};
+function stopSpeech(){
+  if(!('speechSynthesis' in window))return;
+  try{speechSynthesis.cancel()}catch(e){console.error('停止語音失敗：',e);voiceNotice('停止語音失敗，請檢查瀏覽器語音設定。')}
+}
+function speak(t){
+  if(muted||freeOn)return;
+  if(!('speechSynthesis' in window)||!('SpeechSynthesisUtterance' in window)){
+    voiceNotice('此瀏覽器不支援語音，請使用支援語音的瀏覽器。');return;
+  }
   try{
-    if(!speechSynthesis.getVoices().length&&!retry){setTimeout(()=>speak(t,1),400);return}
     const v=femaleVoice();
-    if(!v)return;
+    if(!v&&speechSynthesis.getVoices().length)voiceNotice('找不到英文語音，將嘗試系統預設聲音；如無聲音請安裝英文語音。');
     if(/^[A-Za-z]$/.test(t))t=t.toUpperCase()+'.';
     else if(/^[0-9]$/.test(t))t=DIGIT[+t];
-    speechSynthesis.cancel();
+    stopSpeech();
     const u=new SpeechSynthesisUtterance(t);
     u.lang='en-US';u.rate=.95;u.pitch=1.05;
-    u.voice=v;u.lang=v.lang;
+    if(v){u.voice=v;u.lang=v.lang}
+    u.onerror=e=>{
+      if(e.error==='canceled'||e.error==='interrupted')return;
+      console.error('語音播放失敗：',e.error);
+      voiceNotice('語音播放失敗，請檢查音量及系統英文語音設定。');
+    };
+    speechSynthesis.resume();
     speechSynthesis.speak(u);
-  }catch(e){}
+  }catch(e){console.error('語音播放失敗：',e);voiceNotice('語音播放失敗，請檢查音量及系統英文語音設定。')}
 }
 function kill(m){
   mons=mons.filter(x=>x!==m);target=null;kills++;combo++;score+=Math.min(combo-1,10)*5;
   score+=10*m.word.length*SPD[spdIdx].b;
   m.el.classList.add('pop');if(!(FX&&FX.on))stars(m);fxBoom(m,false);
   tone(660,.1);setTimeout(()=>tone(880,.15),90);
-  setTimeout(()=>speak(mode==='letters'?m.word.toUpperCase():m.word),220);
+  setTimeout(()=>speak(m.word),220);
   const praise=['好棒！','太厲害了！','耶！','讚讚！','漂亮！'];
   if(kills%5===0){level++;say('升級囉！Lv '+level)}else say(combo>=3?'🔥 連擊 ×'+combo+'！':praise[Math.floor(Math.random()*praise.length)]);
   hud();
@@ -483,6 +614,7 @@ function wrong(m){
   el.classList.remove('shake');void el.offsetWidth;el.classList.add('shake');
 }
 function press(c){
+  if(mode==='maze'){mazePress(c);return}
   if(pictureMode){feedPress(c);return}
   if(!target){
     const c0=mons.filter(m=>m.word[0]===c).sort((a,b)=>b.y-a.y)[0];
@@ -498,12 +630,13 @@ let keyT=0;
 window.addEventListener('keydown',e=>{
   if(e.ctrlKey||e.metaKey||e.altKey)return;
   if(freeOn){
-    if(e.key==='Backspace'){e.preventDefault();freeDel();return}
-    if(e.key==='Enter'){e.preventDefault();freeKey('\n');return}
+    if(e.key==='Backspace'){e.preventDefault();return}
     if(e.key==='Escape'){e.preventDefault();freeClear();return}
-    if(e.key==='Tab'){e.preventDefault();freeKey(' ');freeKey(' ');return}
     const ch=keyChar(e);
-    if(ch){e.preventDefault();keyT=performance.now();freeKey(ch)}
+    if(ch&&ch!==' '){
+      if(e.cancelable===false&&e.target===inp)return;
+      e.preventDefault();keyT=performance.now();freeKey(ch);
+    }
     return;
   }
   if(!running)return;
@@ -514,15 +647,17 @@ window.addEventListener('keydown',e=>{
   press(m[1].toLowerCase());
 });
 inp.addEventListener('input',()=>{
-  const c=inp.value.slice(-1).toLowerCase();inp.value='';
+  const text=inp.value.toLowerCase();inp.value='';
+  if(freeOn){for(const c of text)freeKey(c);return}
   if(performance.now()-keyT<150)return;
-  if(running&&/^[a-z]$/.test(c))press(c);else if(freeOn&&/^[\x20-\x7e]$/.test(c))freeKey(c);
+  const c=text.slice(-1);
+  if(running&&/^[a-z]$/.test(c))press(c);
 });
 stage.addEventListener('pointerdown',()=>{if(running)inp.focus()});
 document.querySelectorAll('[data-mode]').forEach(b=>b.onclick=()=>start(b.dataset.mode));
 $('#again').onclick=()=>start(mode);
-$('#home').onclick=()=>{if(mode==='letters')goHub();else{$('#over').hidden=true;$('#menu').hidden=false}};
-const DIFF=[{n:{letters:9,short:50,long:40}},{n:{letters:19,short:130,long:90}},{n:{letters:26,short:999,long:999}}];
+$('#home').onclick=()=>{$('#over').hidden=true;$('#menu').hidden=false};
+const DIFF=[{n:{short:50,long:40}},{n:{short:130,long:90}},{n:{short:999,long:999}}];
 const recent=[];
 let diff=1;
 const THEMES=[
@@ -584,7 +719,7 @@ function renderLib(){
   const q=$('#q').value.trim().toLowerCase();
   const list=libWords().filter(w=>!q||w.includes(q)||(ZH[w]||'').includes(q)).sort();
   $('#libCount').textContent='共 '+list.length+' 個單字，點一下可以聽發音';
-  $('#libList').innerHTML=list.map(w=>'<div class="row" data-w="'+w+'"><span class="e">'+(EMO[w]||'')+'</span><span class="en">'+w+'</span><span class="zh">'+(ZH[w]||'')+'</span></div>').join('')||'<p>找不到喔～</p>';
+  $('#libList').innerHTML=list.map(w=>'<div class="row" data-w="'+w+'"><span class="e"><img src="'+WORD_IMAGES[w]+'" alt="" loading="lazy"></span><span class="en">'+w+'</span><span class="zh">'+(ZH[w]||'')+'</span></div>').join('')||'<p>找不到喔～</p>';
 }
 $('#libChips').innerHTML=LIBCATS.map((t,i)=>'<button data-lc="'+i+'"'+(i?'':' class="on"')+'>'+t+'</button>').join('');
 $('#libChips').onclick=e=>{
@@ -596,7 +731,7 @@ $('#libChips').onclick=e=>{
 $('#q').oninput=renderLib;
 $('#libList').onclick=e=>{const r=e.target.closest('[data-w]');if(r)speak(r.dataset.w)};
 $('#libBtn').onclick=()=>{$('#lib').hidden=false;renderLib();tone(520,.08)};
-$('#libClose').onclick=()=>{$('#lib').hidden=true;try{speechSynthesis.cancel()}catch(e){}};
+$('#libClose').onclick=()=>{$('#lib').hidden=true;stopSpeech()};
 const SIZES=[{n:'小',m:.8,h:.9},{n:'中',m:1,h:1},{n:'大',m:1.35,h:1.15}];
 let sizeIdx=1;
 try{const v=localStorage.getItem('typing-size');if(v!==null)sizeIdx=Math.min(2,Math.max(0,+v||0))}catch(e){}
@@ -617,6 +752,7 @@ const SYM={'-':'minus','=':'equals','+':'plus','.':'dot','/':'slash',',':'comma'
 function keyChar(e){
   const k=e.code||'';
   if(k==='Space')return ' ';
+  if(/^[0-9]$/.test(e.key||''))return e.key;
   let m=/^Key([A-Z])$/.exec(k);if(m)return m[1].toLowerCase();
   m=/^(Digit|Numpad)([0-9])$/.exec(k);
   if(m)return(e.shiftKey&&m[1]==='Digit')?')!@#$%^&*('[+m[2]]:m[2];
@@ -624,8 +760,7 @@ function keyChar(e){
   if(e.key&&e.key.length===1&&e.key.charCodeAt(0)>=32&&e.key.charCodeAt(0)<127)return e.key;
   return null;
 }
-function freeClear(){$('#freeText').innerHTML='';$('#bigKey').innerHTML='';$('#freeHint').style.visibility='visible';inp.focus()}
-let freeOn=false,lastSay=0;
+let freeOn=false;
 const FEED_BOWLS=[
   {name:'青銅',gradient:'bowlBronze'},{name:'白銀',gradient:'bowlSilver'},
   {name:'黃金',gradient:'bowlGold'},{name:'白金',gradient:'bowlPlatinum'},
@@ -656,7 +791,7 @@ function nextFeedWord(){
   const word=pool[Math.floor(Math.random()*pool.length)];
   feedRecent.push(word);if(feedRecent.length>12)feedRecent.shift();
   feedCurrent={word,i:0,el:$('#feedQuestion')};
-  $('#feedIcon').textContent=EMO[word];
+  $('#feedImage').src=WORD_IMAGES[word];
   $('#feedQuestion').setAttribute('aria-label','題目：'+ZH[word]+'，'+word);
   renderWord(feedCurrent);
 }
@@ -712,43 +847,152 @@ function feedPress(c){
 }
 $('#feedRestart').onclick=startFeeding;
 $('#feedHome').onclick=goHub;
-function hideAll(){['hub','menu','over','lib','free'].forEach(i=>$('#'+i).hidden=true)}
+const MAZE_PATH=[[1,1],[3,1],[3,3],[5,3],[5,5],[7,5],[7,7],[9,7],[9,9],[7,9]];
+const MAZE_LOOP_START=6,MAZE_EXIT=MAZE_PATH[MAZE_LOOP_START];
+const MAZE_WORDS='cat dog sun hat pig bee cup car bus egg cow fox owl pen ant bed bag box cap ear eye ice key red tea van web bat fish milk star moon cake frog bear duck tree book bird kite rain ball lion snow wolf rice gift fire hand leaf ship shoe sock tent corn fork goat snail grape lemon mouse horse zebra snake whale shark robot cloud sheep heart apple tiger panda candy pizza smile orange yellow school window candle bridge rabbit banana monkey flower rocket cookie turtle pencil dragon castle butter cheese cherry coffee doctor guitar hammer island magnet spider potato tomato violin bicycle cabbage dolphin lantern mermaid rainbow teacher pumpkin balloon penguin giraffe dinosaur elephant butterfly umbrella princess airplane backpack crocodile fireworks hamburger kangaroo ladybug snowman strawberry telescope volcano watermelon bakery bowl chair crown dress glove house phone radio shirt spoon water cactus camera carrot helmet lobster mailbox ribbon rooster sponge trophy unicorn'.split(' ');
+const mazeMap=Array.from({length:11},()=>Array(11).fill(1));
+MAZE_PATH.forEach(([x,y],i)=>{
+  mazeMap[y][x]=0;
+  if(i){
+    const [px,py]=MAZE_PATH[i-1];
+    mazeMap[(y+py)/2][(x+px)/2]=0;
+  }
+});
+let mazeCurrent,mazeStep=0,mazeBank=[],mazeRecent=[],mazeFrame=null,mazeEndless=false;
+
+function mazeAngle(step){
+  const [x,y]=MAZE_PATH[step], [nx,ny]=step===MAZE_PATH.length-1?MAZE_EXIT:MAZE_PATH[step+1];
+  return Math.atan2(ny-y,nx-x);
+}
+function nextMazeWord(){
+  const pool=mazeBank.filter(w=>!mazeRecent.includes(w));
+  const word=pool[Math.floor(Math.random()*pool.length)];
+  mazeRecent.push(word);if(mazeRecent.length>12)mazeRecent.shift();
+  mazeCurrent={word,i:0,el:$('#mazeQuestion')};
+  $('#mazeProgress').textContent=mazeEndless?'♾️ 無限模式 · 第 '+(mazeStep+1)+' 站':'第 '+(mazeStep+1)+' / '+MAZE_PATH.length+' 站';
+  const el=$('#mazeImage');
+  el.hidden=false;el.src=WORD_IMAGES[word];
+  $('#mazeObject').setAttribute('aria-label',ZH[word]);
+  $('#mazeMeaning').textContent=ZH[word];
+  renderWord(mazeCurrent);
+}
+function startMaze(){
+  mazeFireworks.stop();
+  if(mazeFrame!==null)cancelAnimationFrame(mazeFrame);mazeFrame=null;
+  mode='maze';pictureMode=false;freeOn=false;running=true;score=0;mazeStep=0;
+  mons=[];target=null;
+  mazeBank=MAZE_WORDS;
+  mazeRecent=[];
+  document.body.classList.add('mazing');updateFX();
+  $('#mazeView').classList.remove('moving');$('#mazeActions').hidden=true;$('#mazeFireworks').hidden=true;
+  $('#mazeStatus').textContent=mazeEndless?'一起繼續探索迷宮吧！':'一起來尋找迷宮出口吧！';
+  $('#score').textContent=score;
+  hideAll();nextMazeWord();
+  drawMaze(MAZE_PATH[0][0]+.5,MAZE_PATH[0][1]+.5,mazeAngle(0));
+  tone(520,.08);inp.focus();
+}
+function mazePress(c){
+  if(mazeFrame!==null)return;
+  if(mazeCurrent.word[mazeCurrent.i]!==c){
+    mazeCurrent.i=0;renderWord(mazeCurrent);
+    tone(260,.08,'triangle',.05);$('#mazeStatus').textContent='沒關係，從頭再試一次！';
+    return;
+  }
+  mazeCurrent.i++;tone(500+mazeCurrent.i*60,.07);renderWord(mazeCurrent);
+  if(mazeCurrent.i<mazeCurrent.word.length)return;
+  const word=mazeCurrent.word;
+  score+=10*word.length;$('#score').textContent=score;speak(word);
+  if(!mazeEndless&&mazeStep===MAZE_PATH.length-1){
+    running=false;$('#mazeStatus').textContent='🎉 找到出口了！你真棒！';$('#mazeFireworks').hidden=false;
+    const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    $('#mazeMotion').hidden=!reduced;$('#mazeMotion').setAttribute('aria-pressed','false');
+    $('#mazeMotion').textContent='播放煙火動畫';mazeFireworks.start(!reduced);
+    $('#mazeActions').hidden=false;$('#mazeRestart').focus();return;
+  }
+  $('#mazeStatus').textContent='好棒！往前走，轉個彎 ✨';
+  $('#mazeView').classList.add('moving');
+  const pathIndex=mazeStep<MAZE_PATH.length?mazeStep:MAZE_LOOP_START+(mazeStep-MAZE_LOOP_START)%(MAZE_PATH.length-MAZE_LOOP_START);
+  const nextIndex=pathIndex===MAZE_PATH.length-1?MAZE_LOOP_START:pathIndex+1;
+  const [x,y]=MAZE_PATH[pathIndex], [nx,ny]=MAZE_PATH[nextIndex];
+  const startAngle=mazeAngle(pathIndex),endAngle=mazeAngle(nextIndex);
+  const turn=Math.atan2(Math.sin(endAngle-startAngle),Math.cos(endAngle-startAngle));
+  const duration=window.matchMedia('(prefers-reduced-motion: reduce)').matches?0:900;
+  const started=performance.now();
+  function move(now){
+    const t=duration?Math.min(1,(now-started)/duration):1;
+    const forward=Math.min(1,t/.65),rotate=Math.max(0,(t-.65)/.35);
+    drawMaze(x+.5+(nx-x)*forward,y+.5+(ny-y)*forward,startAngle+turn*rotate);
+    if(t<1){mazeFrame=requestAnimationFrame(move);return}
+    mazeFrame=null;mazeStep++;nextMazeWord();$('#mazeView').classList.remove('moving');
+    $('#mazeStatus').textContent='看看前面遇到了什麼？';
+  }
+  mazeFrame=requestAnimationFrame(move);
+}
+$('#mazeRestart').onclick=()=>startMaze();
+$('#mazeHome').onclick=goHub;
+$('#mazeMotion').onclick=()=>{
+  const playing=$('#mazeMotion').getAttribute('aria-pressed')==='true';
+  $('#mazeMotion').setAttribute('aria-pressed',String(!playing));
+  $('#mazeMotion').textContent=playing?'播放煙火動畫':'停止煙火動畫';
+  mazeFireworks.start(!playing);
+};
+$('#mazeBack').onclick=goHub;
+$('#mazeChallenge').onclick=()=>{mazeEndless=false;startMaze()};
+$('#mazeEndless').onclick=()=>{mazeEndless=true;startMaze()};
+function hideAll(){['hub','menu','mazeMenu','over','lib','free'].forEach(i=>$('#'+i).hidden=true)}
 function goHub(){
   running=false;freeOn=false;target=null;mons=[];
+  if(candyGame)candyGame.stop();
+  mazeFireworks.stop();
   document.querySelectorAll('.mon,.star').forEach(e=>e.remove());
   clearTimeout(feedRefillTimer);feedRefillTimer=null;
-  document.body.classList.remove('feeding');
+  if(mazeFrame!==null)cancelAnimationFrame(mazeFrame);mazeFrame=null;
+  $('#mazeFireworks').hidden=true;
+  document.body.classList.remove('feeding','mazing');
   pictureMode=false;updateFX();
   hideAll();$('#hub').hidden=false;
-  try{speechSynthesis.cancel()}catch(e){}
+  stopSpeech();
 }
 function freeShow(){
   hideAll();$('#free').hidden=false;freeOn=true;running=false;
-  $('#freeHint').style.visibility='visible';inp.focus();
+  stopSpeech();$('#voiceNotice').hidden=true;lastVoiceNotice='';
+  candyMotion=false;
+  $('#candyMotion').hidden=!window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  candyGame.start();inp.focus();
 }
+let candyGame=null,candyMotion=false;
+if(typeof Matter!=='undefined'&&typeof createCandyGame==='function'){
+  candyGame=createCandyGame($('#candyBoard'),{
+    score:value=>{$('#candyScore').textContent=value},
+    status:value=>{$('#freeHint').textContent=value},
+    match:bubblePop
+  });
+}else{
+  console.error('糖果遊戲資源載入失敗');
+  $('#assetError').hidden=false;
+  document.querySelector('[data-type=free]').disabled=true;
+}
+function freeClear(){candyGame.start(candyMotion);inp.focus()}
+function changeCandyCount(delta){
+  const count=Number($('#candyCount').textContent)+delta;
+  candyGame.setMatchCount(count);
+  $('#candyCount').textContent=count;
+  $('#candyLess').disabled=count===2;$('#candyMore').disabled=count===10;
+}
+$('#candyLess').onclick=()=>changeCandyCount(-1);
+$('#candyMore').onclick=()=>changeCandyCount(1);
+$('#candyShake').onclick=()=>{candyGame.shake();inp.focus()};
+$('#candyMotion').onclick=()=>{
+  candyMotion=true;candyGame.playMotion();$('#candyMotion').hidden=true;
+  $('#freeHint').textContent='已開啟落下動畫，打字讓糖果掉下來吧！';
+  inp.focus();
+};
 function freeKey(c){
-  const t=$('#freeText');
-  $('#freeHint').style.visibility='hidden';
-  if(c==='\n'){tone(240,.05,'triangle');t.appendChild(document.createElement('br'));t.scrollTop=t.scrollHeight;return}
-  const sp=document.createElement('span');sp.className='fl';
-  if(c===' '){sp.innerHTML='&nbsp;';tone(240,.05,'triangle')}
-  else{
-    const code=c.charCodeAt(0),show=/[a-z]/.test(c)?c.toUpperCase():c;
-    const col='hsl('+((code*14)%360)+',75%,50%)';
-    sp.textContent=show;sp.style.color=col;
-    const b=$('#bigKey');b.innerHTML='';
-    const x=document.createElement('span');x.textContent=show;x.style.color=col;b.appendChild(x);
-    tone(300+(code%40)*20,.12,'triangle');
-    const n=performance.now();
-    const say=/[a-z0-9]/.test(c)?show:'';
-    if(say&&n-lastSay>350){lastSay=n;speak(say)}
-  }
-  t.appendChild(sp);
-  while(t.childNodes.length>260)t.removeChild(t.firstChild);
-  t.scrollTop=t.scrollHeight;
+  if(!/^[\x21-\x7e]$/.test(c))return;
+  const show=/[a-z]/.test(c)?c.toUpperCase():c;
+  candyGame.push(show);
 }
-function freeDel(){const t=$('#freeText');if(t.lastChild)t.removeChild(t.lastChild);tone(200,.06,'triangle')}
-$('#freeClear').onclick=()=>{$('#freeText').innerHTML='';$('#bigKey').innerHTML='';$('#freeHint').style.visibility='visible';inp.focus()};
+$('#freeClear').onclick=freeClear;
 $('#freeBack').onclick=goHub;
 $('#menuBack').onclick=goHub;
 function showGameMenu(){
@@ -756,11 +1000,11 @@ function showGameMenu(){
 }
 document.querySelector('[data-type=game]').onclick=showGameMenu;
 document.querySelector('[data-type=picture]').onclick=startFeeding;
+document.querySelector('[data-type=maze]').onclick=()=>{hideAll();$('#mazeMenu').hidden=false;tone(520,.08)};
 document.querySelector('[data-type=free]').onclick=()=>{freeShow();tone(520,.08)};
-document.querySelector('[data-type=abc]').onclick=()=>{$('#hub').hidden=true;tone(520,.08);start('letters')};
 $('#free').addEventListener('pointerdown',e=>{if(!e.target.closest('button'))inp.focus()});
 let FX=null,combo=0,fxEnabled=true;
-function updateFX(){if(FX)FX.setOn(fxEnabled&&!pictureMode)}
+function updateFX(){if(FX)FX.setOn(fxEnabled&&!pictureMode&&!document.body.classList.contains('mazing'))}
 function fxBoom(m,bad){if(FX&&FX.on)FX.boom(m,bad)}
 (function(){
   try{
@@ -775,15 +1019,19 @@ function fxBoom(m,bad){if(FX&&FX.on)FX.boom(m,bad)}
     const G={body:new T.SphereGeometry(40,28,20),eye:new T.SphereGeometry(9,16,12),pup:new T.SphereGeometry(4.6,12,10),horn:new T.ConeGeometry(7,22,12),ball:new T.SphereGeometry(5,12,10),cheek:new T.SphereGeometry(6,10,8),star:new T.OctahedronGeometry(1),mouth:new T.TorusGeometry(8,1.8,8,16,Math.PI),ring:new T.TorusGeometry(54,3.5,8,40),stick:new T.CylinderGeometry(1.5,1.5,22,8),wave:new T.TorusGeometry(30,4,8,40)};
     const white=S(0xffffff,{roughness:.3}),dark=S(0x4a3b6b),pink=S(0xff7eb6),cream=S(0xfff6c9);
     const texC={};
-    function emoTex(e){
-      if(texC[e])return texC[e];
+    function wordTexture(word,badge){
+      const key=(badge?'b':'p')+word;if(texC[key])return texC[key];
       const c=document.createElement('canvas');c.width=c.height=128;
       const x=c.getContext('2d');
-      x.fillStyle='#fffbe9';x.beginPath();x.arc(64,64,60,0,7);x.fill();
-      x.lineWidth=8;x.strokeStyle='#ffb3d1';x.stroke();
-      x.font='62px "Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif';
-      x.textAlign='center';x.textBaseline='middle';x.fillText(e,64,70);
-      return texC[e]=new T.CanvasTexture(c);
+      if(badge){
+        x.fillStyle='#fffbe9';x.beginPath();x.arc(64,64,60,0,7);x.fill();
+        x.lineWidth=8;x.strokeStyle='#ffb3d1';x.stroke();
+      }
+      const texture=texC[key]=new T.CanvasTexture(c),image=new Image();
+      image.onload=()=>{const size=badge?70:110;x.drawImage(image,(128-size)/2,(128-size)/2,size,size);texture.needsUpdate=true};
+      image.onerror=()=>reportAssetError(WORD_IMAGES[word]);
+      image.src=WORD_IMAGES[word];
+      return texture;
     }
     function mk(m){
       const g=new T.Group(),bm=S(new T.Color(m.col));
@@ -797,8 +1045,8 @@ function fxBoom(m,bad){if(FX&&FX.on)FX.boom(m,bad)}
       else if(m.kind===1){add(G.stick,dark,0,46,0);add(G.ball,pink,0,60,0,1.6,1.6,1.6)}
       else if(m.kind===2){[-1,1].forEach(d=>add(G.ball,bm,d*30,28,0,2,2,2))}
       else{[-16,0,16].forEach((x,i)=>add(G.horn,cream,x,i===1?42:38,0))}
-      if(EMO[m.word]){
-        const sp=new T.Sprite(new T.SpriteMaterial({map:emoTex(EMO[m.word]),transparent:true}));
+      if(WORD_IMAGES[m.word]){
+        const sp=new T.Sprite(new T.SpriteMaterial({map:wordTexture(m.word,true),transparent:true}));
         sp.position.set(0,94,30);sp.scale.set(58,58,1);g.add(sp);
       }
       const ring=new T.Mesh(G.ring,new T.MeshBasicMaterial({color:0xffd24d}));
@@ -811,19 +1059,11 @@ function fxBoom(m,bad){if(FX&&FX.on)FX.boom(m,bad)}
     const ANI=['bear','cat','bunny','pig','frog','panda','chick','mouse','dog','penguin'];
     const WA={bear:'bear',koala:'bear',cat:'cat',kitten:'cat',rabbit:'bunny',bunny:'bunny',pig:'pig',frog:'frog',toad:'frog',panda:'panda',chick:'chick',chicken:'chick',hen:'chick',duck:'chick',duckling:'chick',mouse:'mouse',rat:'mouse',hamster:'mouse',dog:'dog',puppy:'dog',pup:'dog',penguin:'penguin'};
     const AC={bear:0xb98558,cat:0xffb26b,bunny:0xfff0f5,pig:0xffa8c5,frog:0x86e07f,panda:0xffffff,chick:0xffe45e,mouse:0xcfcfdc,dog:0xdca56a,penguin:0x3d4278};
-    function emoPlain(e){
-      const k='p'+e;if(texC[k])return texC[k];
-      const c=document.createElement('canvas');c.width=c.height=128;
-      const x=c.getContext('2d');
-      x.font='100px "Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif';
-      x.textAlign='center';x.textBaseline='middle';x.fillText(e,64,70);
-      return texC[k]=new T.CanvasTexture(c);
-    }
     function mkBubble(m){
       const g=new T.Group();
       const sph=new T.Mesh(G.body,new T.MeshStandardMaterial({color:new T.Color(m.col),transparent:true,opacity:.4,roughness:.2,metalness:.1,depthWrite:false}));
       sph.scale.setScalar(1.18);g.add(sph);
-      const sp=new T.Sprite(new T.SpriteMaterial({map:emoPlain(EMO[m.word]),transparent:true}));
+      const sp=new T.Sprite(new T.SpriteMaterial({map:wordTexture(m.word,false),transparent:true}));
       sp.position.z=6;sp.scale.set(80,80,1);g.add(sp);
       const hl=new T.Mesh(G.ball,new T.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:.85}));
       hl.position.set(-22,26,40);hl.scale.set(1.6,.9,.6);hl.rotation.z=.6;g.add(hl);
@@ -833,7 +1073,7 @@ function fxBoom(m,bad){if(FX&&FX.on)FX.boom(m,bad)}
       sc.add(g);return g;
     }
     function mk2(m){
-      if(!WA[m.word]&&EMO[m.word])return mkBubble(m);
+      if(!WA[m.word]&&WORD_IMAGES[m.word])return mkBubble(m);
       const a=WA[m.word]||ANI[Math.floor(m.ph/6*10)%10],g=new T.Group(),bM=MM(AC[a]);
       const dk=MM(0x3b2f4f),pk=MM(0xff8fb0),wh=MM(0xffffff),or=MM(0xffa63d),lt=MM(0xfbe3c8),br=MM(0x8a5a3a);
       const add=(geo,mat,x,y,z,sx,sy,sz,rz)=>{const o=new T.Mesh(geo,mat);o.position.set(x,y,z);if(sx)o.scale.set(sx,sy,sz);if(rz)o.rotation.z=rz;g.add(o);return o};
@@ -853,8 +1093,8 @@ function fxBoom(m,bad){if(FX&&FX.on)FX.boom(m,bad)}
       else if(a==='mouse'){both(d=>{add(GE.ear,bM,d*32,28,0,1.3,1.3,.5);add(GE.ear,pk,d*32,28,4,.8,.8,.4)});whisk();add(G.ball,pk,0,-1,41,.8,.7,.7);smile();eyes(14,10,33)}
       else if(a==='dog'){both(d=>add(GE.ear,br,d*36,12,0,.55,1.5,.5,-d*.35));add(GE.ear,lt,0,-8,31,1.05,.8,.7);add(G.ball,dk,0,-3,40,1.1,.8,.8);add(GE.ear,pk,0,-18,36,.4,.5,.2);eyes(14,12,33)}
       else{add(G.body,wh,0,-8,12,.82,.85,.8);add(G.horn,or,0,4,44,.9,.5,.9).rotation.x=Math.PI/2;both(d=>{add(GE.ear,or,d*14,-38,14,1.2,.4,1.4);add(GE.ear,bM,d*40,-4,0,.45,1.2,.6)});eyes(12,16,34)}
-      if(EMO[m.word]){
-        const sp=new T.Sprite(new T.SpriteMaterial({map:emoTex(EMO[m.word]),transparent:true}));
+      if(WORD_IMAGES[m.word]){
+        const sp=new T.Sprite(new T.SpriteMaterial({map:wordTexture(m.word,true),transparent:true}));
         sp.position.set(0,a==='bunny'?122:98,30);sp.scale.set(58,58,1);g.add(sp);
       }
       const ring=new T.Mesh(G.ring,new T.MeshBasicMaterial({color:0xffd24d}));

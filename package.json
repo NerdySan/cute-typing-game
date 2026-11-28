@@ -5,8 +5,12 @@
   "private": true,
   "license": "MIT",
   "type": "module",
+  "devDependencies": {
+    "matter-js": "0.20.0"
+  },
   "scripts": {
-    "check": "node scripts/check.mjs",
+    "check": "node scripts/check.mjs && node --test scripts/test-candy.mjs",
+    "test": "node --test scripts/test-candy.mjs",
     "start": "node scripts/serve.mjs"
   },
   "engines": {

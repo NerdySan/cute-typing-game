@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160">
+  <ellipse cx="80" cy="145" rx="70" ry="8" fill="#b7818c" opacity=".25"/>
+  <rect x="17" y="35" width="126" height="101" rx="6" fill="#ffe8c8" stroke="#9b6265" stroke-width="4"/>
+  <rect x="30" y="16" width="100" height="30" rx="8" fill="#fff9e9" stroke="#b75f6e" stroke-width="4"/>
+  <text x="80" y="36" text-anchor="middle" font-family="sans-serif" font-size="16" font-weight="900" letter-spacing="1" fill="#9b4e5e">BAKERY</text>
+  <rect x="25" y="75" width="60" height="48" rx="4" fill="#c6edf0" stroke="#9b6265" stroke-width="3"/>
+  <path d="M27 100 H83 M27 118 H83" stroke="#b87b6d" stroke-width="3"/>
+  <path d="M32 96 Q32 84 41 84 Q50 84 50 96Z M55 96 Q55 84 64 84 Q73 84 73 96Z" fill="#eaa95b" stroke="#a46741" stroke-width="2"/>
+  <path d="M35 88 L38 91 M42 87 L45 90 M58 88 L61 91 M65 87 L68 90" stroke="#fff2d6" stroke-width="2" stroke-linecap="round"/>
+  <path d="M33 114 Q36 103 47 108 Q55 102 59 114 Q49 120 33 114Z M61 114 Q64 104 73 106 Q81 107 81 114Z" fill="#e6a14e" stroke="#a46741" stroke-width="2"/>
+  <path d="M96 136 V82 Q96 76 102 76 H129 Q135 76 135 82 V136Z" fill="#c18072" stroke="#9b6265" stroke-width="3"/>
+  <rect x="102" y="82" width="27" height="25" rx="3" fill="#c6edf0"/>
+  <circle cx="126" cy="118" r="2.5" fill="#fff1b1"/>
+  <path d="M18 47 H142 L147 62 Q143 72 136 64 Q130 72 124 64 Q118 72 112 64 Q106 72 100 64 Q94 72 88 64 Q82 72 76 64 Q70 72 64 64 Q58 72 52 64 Q46 72 40 64 Q34 72 28 64 Q21 72 13 62Z" fill="#f29aa5" stroke="#b75f6e" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M35 49 L33 63 M55 49 L54 63 M75 49 V63 M95 49 L96 63 M115 49 L118 63" stroke="#fff5df" stroke-width="7"/>
+  <path d="M20 136 H140" stroke="#9b6265" stroke-width="4" stroke-linecap="round"/>
+  <path d="M70 130 Q67 112 72 105 Q76 100 79 105 L83 130 M82 130 Q82 110 88 104 Q92 101 94 106 L93 130" fill="#eab16c" stroke="#a46741" stroke-width="2.5"/>
+  <path d="M71 111 L77 114 M72 118 L78 121 M85 111 L91 114 M85 118 L91 121" stroke="#fff1d2" stroke-width="2"/>
+  <path d="M65 126 H98 L94 143 H69Z" fill="#b87b54" stroke="#8f5961" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M68 132 H96 M73 127 L76 142 M82 127 V142 M91 127 L88 142" stroke="#f8d49d" stroke-width="2"/>
+        </svg>
